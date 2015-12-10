@@ -1,0 +1,34 @@
+{
+    "name": "apimatic/neutrinoapi",
+    "type": "library",
+    "description": "The general-purpose API",
+    "keywords": ["Neutrino API","API","SDK"],
+    "homepage": "https://apimatic.io",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Zeeshan @ APIMATIC",
+            "email": "zeeshan@apimatic.io",
+            "homepage": "https://github.com/apimatic",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/apimatic/unirest-php"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "apimatic/unirest-php": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "NeutrinoAPILib\\": "src/"
+        }
+    }
+}
