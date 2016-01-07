@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -41,7 +41,7 @@ class SecurityAndNetworkingController {
      * @param  bool       $fetchContent      Required parameter: If this URL responds with html, text, json or xml then return the response. This option is useful if you want to perform further processing on the URL content
      * @param  string     $url               Required parameter: The URL to process
      * @return mixed response from the API call*/
-    public function createURLInfo (
+    public function uRLInfo (
                 $fetchContent,
                 $url) 
     {
@@ -81,7 +81,7 @@ class SecurityAndNetworkingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -91,7 +91,7 @@ class SecurityAndNetworkingController {
      * Check the reputation of an IP address or domain against a comprehensive list of blacklists and blocklists (DNSBLs). See: https://www.neutrinoapi.com/api/host-reputation/
      * @param  string     $host            Required parameter: An IPv4 address or a domain name. If you supply a domain name it will be checked against the URI DNSBL list
      * @return mixed response from the API call*/
-    public function createHostReputation (
+    public function hostReputation (
                 $host) 
     {
         //the base uri for api requests
@@ -129,7 +129,7 @@ class SecurityAndNetworkingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -139,7 +139,7 @@ class SecurityAndNetworkingController {
      * The IP Blocklist API will detect potentially malicious or dangerous IP addresses. See: https://www.neutrinoapi.com/api/ip-blocklist/
      * @param  string     $ip              Required parameter: An IPv4 address
      * @return mixed response from the API call*/
-    public function createIPBlocklist (
+    public function iPBlocklist (
                 $ip) 
     {
         //the base uri for api requests
@@ -177,7 +177,7 @@ class SecurityAndNetworkingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

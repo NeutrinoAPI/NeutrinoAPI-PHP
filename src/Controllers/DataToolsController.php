@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -41,7 +41,7 @@ class DataToolsController {
      * @param  string          $number           Required parameter: The phone number
      * @param  string|null     $countryCode      Optional parameter: ISO 2-letter country code, assume numbers are based in this country. If not set numbers are assumed to be in international format (with or without the leading + sign)
      * @return mixed response from the API call*/
-    public function createPhoneValidate (
+    public function phoneValidate (
                 $number,
                 $countryCode = NULL) 
     {
@@ -81,7 +81,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -91,7 +91,7 @@ class DataToolsController {
      * Parse, validate and get detailed user-agent information from a user-agent string. See: https://www.neutrinoapi.com/api/user-agent-info/
      * @param  string     $userAgent       Required parameter: A user-agent string
      * @return mixed response from the API call*/
-    public function createUserAgentInfo (
+    public function userAgentInfo (
                 $userAgent) 
     {
         //the base uri for api requests
@@ -129,7 +129,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -141,7 +141,7 @@ class DataToolsController {
      * @param  string        $type                  Required parameter: The code type. See the API docs for all supported types
      * @param  bool|null     $addKeywordLinks       Optional parameter: Add links on source code keywords to the relevant language documentation
      * @return binary response from the API call*/
-    public function createCodeHighlight (
+    public function codeHighlight (
                 $content,
                 $type,
                 $addKeywordLinks = NULL) 
@@ -181,7 +181,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -192,7 +192,7 @@ class DataToolsController {
      * @param  string          $content              Required parameter: The text content to check. This can be either a URL to load content from or an actual content string
      * @param  string|null     $censorCharacter      Optional parameter: The character to use to censor out the bad words found
      * @return mixed response from the API call*/
-    public function createBadWordFilter (
+    public function badWordFilter (
                 $content,
                 $censorCharacter = NULL) 
     {
@@ -232,7 +232,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -244,7 +244,7 @@ class DataToolsController {
      * @param  string     $fromValue       Required parameter: The value to convert from
      * @param  string     $toType          Required parameter: The type to convert to
      * @return mixed response from the API call*/
-    public function createConvert (
+    public function convert (
                 $fromType,
                 $fromValue,
                 $toType) 
@@ -286,7 +286,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -297,7 +297,7 @@ class DataToolsController {
      * @param  string        $email           Required parameter: The email address
      * @param  bool|null     $fixTypos        Optional parameter: Automatically attempt to fix typos in the address
      * @return mixed response from the API call*/
-    public function createEmailValidate (
+    public function emailValidate (
                 $email,
                 $fixTypos = NULL) 
     {
@@ -337,7 +337,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -348,7 +348,7 @@ class DataToolsController {
      * @param  string     $content         Required parameter: The HTML content. This can be either a URL to load HTML from or an actual HTML content string
      * @param  string     $outputType      Required parameter: The level of sanitization, possible values are: plain-text, simple-text, basic-html, basic-html-with-images, advanced-html
      * @return binary response from the API call*/
-    public function createHTMLClean (
+    public function hTMLClean (
                 $content,
                 $outputType) 
     {
@@ -386,7 +386,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -399,7 +399,7 @@ class DataToolsController {
      * @param  string|null     $attribute       Optional parameter: If set, then extract data from the specified tag attribute. If not set, then data will be extracted from the tags inner content
      * @param  string|null     $baseUrl         Optional parameter: The base URL to replace into realive links
      * @return mixed response from the API call*/
-    public function createHTMLExtract (
+    public function hTMLExtract (
                 $content,
                 $tag,
                 $attribute = NULL,
@@ -443,7 +443,7 @@ class DataToolsController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

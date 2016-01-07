@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -41,7 +41,7 @@ class ECommerceController {
      * @param  string          $binNumber       Required parameter: The BIN or IIN number (the first 6 digits of a credit card number)
      * @param  string|null     $customerIp      Optional parameter: Pass in a customers remote IP address. The API will then determine the country of the IP address and match it against the BIN country. This feature is designed for fraud prevention and detection checks.
      * @return mixed response from the API call*/
-    public function createBINLookup (
+    public function bINLookup (
                 $binNumber,
                 $customerIp = NULL) 
     {
@@ -81,7 +81,7 @@ class ECommerceController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

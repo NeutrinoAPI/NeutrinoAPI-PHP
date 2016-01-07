@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -44,7 +44,7 @@ class ImagingController {
      * @param  int|null        $height       Optional parameter: The height of the QR code (in px)
      * @param  int|null        $width        Optional parameter: The width of the QR code (in px)
      * @return binary response from the API call*/
-    public function createQRCode (
+    public function qRCode (
                 $content,
                 $bgColor = NULL,
                 $fgColor = NULL,
@@ -88,7 +88,7 @@ class ImagingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -101,7 +101,7 @@ class ImagingController {
      * @param  int|null        $margin         Optional parameter: The PDF document margin (in mm)
      * @param  string|null     $title          Optional parameter: The PDF document title
      * @return binary response from the API call*/
-    public function createHTMLToPDF (
+    public function hTMLToPDF (
                 $content,
                 $htmlWidth = NULL,
                 $margin = NULL,
@@ -143,7 +143,7 @@ class ImagingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -156,7 +156,7 @@ class ImagingController {
      * @param  int             $width         Required parameter: Width to resize to (in px)
      * @param  string|null     $format        Optional parameter: The output image format, can be either png or jpg
      * @return binary response from the API call*/
-    public function createImageResize (
+    public function imageResize (
                 $height,
                 $imageUrl,
                 $width,
@@ -198,7 +198,7 @@ class ImagingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -214,7 +214,7 @@ class ImagingController {
      * @param  string|null     $position          Optional parameter: The position of the watermark image, possible values are: center, top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
      * @param  int|null        $width             Optional parameter: If set resize the resulting image to this width (preserving aspect ratio)
      * @return binary response from the API call*/
-    public function createImageWatermark (
+    public function imageWatermark (
                 $imageUrl,
                 $watermarkUrl,
                 $format = NULL,
@@ -262,7 +262,7 @@ class ImagingController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

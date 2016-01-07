@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -41,7 +41,7 @@ class TelephonyController {
      * @param  string     $audioUrl        Required parameter: A URL to a valid audio file. Accepted audio formats are: MP3, WAV, OGG
      * @param  string     $number          Required parameter: The phone number to call. Must be valid international format
      * @return mixed response from the API call*/
-    public function createPhonePlayback (
+    public function phonePlayback (
                 $audioUrl,
                 $number) 
     {
@@ -81,7 +81,7 @@ class TelephonyController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -91,7 +91,7 @@ class TelephonyController {
      * Check if a security code from one of the verify APIs is valid. See: https://www.neutrinoapi.com/api/verify-security-code/
      * @param  int        $securityCode      Required parameter: The security code to verify
      * @return mixed response from the API call*/
-    public function createVerifySecurityCode (
+    public function verifySecurityCode (
                 $securityCode) 
     {
         //the base uri for api requests
@@ -129,7 +129,7 @@ class TelephonyController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -140,7 +140,7 @@ class TelephonyController {
      * @param  string          $number           Required parameter: A phone number
      * @param  string|null     $countryCode      Optional parameter: ISO 2-letter country code, assume numbers are based in this country. If not set numbers are assumed to be in international format (with or without the leading + sign)
      * @return mixed response from the API call*/
-    public function createHLRLookup (
+    public function hLRLookup (
                 $number,
                 $countryCode = NULL) 
     {
@@ -180,7 +180,7 @@ class TelephonyController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -195,7 +195,7 @@ class TelephonyController {
      * @param  int|null        $playbackDelay      Optional parameter: The delay in milliseconds between the playback of each security code
      * @param  int|null        $securityCode       Optional parameter: Pass in your own security code. This is useful if you have implemented TOTP or similar 2FA methods. If not set then we will generate a secure random code (only numerical security codes are currently supported)
      * @return mixed response from the API call*/
-    public function createPhoneVerify (
+    public function phoneVerify (
                 $number,
                 $codeLength = NULL,
                 $countryCode = NULL,
@@ -243,7 +243,7 @@ class TelephonyController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -257,7 +257,7 @@ class TelephonyController {
      * @param  string|null     $languageCode      Optional parameter: The language to send the verification code in, available languages are: de - German, en - English, es - Spanish, fr - Fench, it - Italian, pt - Portuguese, ru - Russian
      * @param  int|null        $securityCode      Optional parameter: ass in your own security code. This is useful if you have implemented TOTP or similar 2FA methods. If not set then we will generate a secure random code (only numerical security codes are currently supported)
      * @return mixed response from the API call*/
-    public function createSMSVerify (
+    public function sMSVerify (
                 $number,
                 $codeLength = NULL,
                 $countryCode = NULL,
@@ -303,7 +303,7 @@ class TelephonyController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;

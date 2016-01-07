@@ -2,7 +2,7 @@
 /*
  * NeutrinoAPILib
  *
- * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 12/10/2015
+ * This file was automatically generated for NeutrinoAPI.com by APIMATIC BETA v2.0 on 01/07/2016
  */
 
 namespace NeutrinoAPILib\Controllers;
@@ -41,7 +41,7 @@ class GeolocationController {
      * @param  string        $ip                 Required parameter: The IP address
      * @param  bool|null     $reverseLookup      Optional parameter: Do reverse DNS (PTR) lookup. This option can add extra delay to the request so only use it if you need it
      * @return mixed response from the API call*/
-    public function createIPInfo (
+    public function iPInfo (
                 $ip,
                 $reverseLookup = NULL) 
     {
@@ -81,7 +81,7 @@ class GeolocationController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -93,7 +93,7 @@ class GeolocationController {
      * @param  string|null     $countryCode       Optional parameter: The ISO 2-letter country code to be biased towards (default is no country bias)
      * @param  string|null     $languageCode      Optional parameter: The language to display results in
      * @return mixed response from the API call*/
-    public function createGeocodeAddress (
+    public function geocodeAddress (
                 $address,
                 $countryCode = NULL,
                 $languageCode = NULL) 
@@ -135,7 +135,7 @@ class GeolocationController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
@@ -147,7 +147,7 @@ class GeolocationController {
      * @param  double          $longitude         Required parameter: The location longitude
      * @param  string|null     $languageCode      Optional parameter: The language to display results in
      * @return mixed response from the API call*/
-    public function createGeocodeReverse (
+    public function geocodeReverse (
                 $latitude,
                 $longitude,
                 $languageCode = NULL) 
@@ -189,7 +189,7 @@ class GeolocationController {
 
         //Error handling using HTTP status codes
         if (($response->code < 200) || ($response->code > 206)) { //[200,206] = HTTP OK
-            throw new APIException("HTTP Response Not OK", $response->code);
+            throw new APIException("HTTP Response Not OK", $response->code, $response->body);
         }
 
         return $response->body;
