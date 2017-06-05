@@ -2,21 +2,15 @@
     "name": "apimatic/neutrinoapi",
     "type": "library",
     "description": "The general-purpose API",
-    "keywords": ["Neutrino API","API","SDK"],
+    "keywords": ["NeutrinoAPI","API","SDK"],
     "homepage": "https://apimatic.io",
     "license": "MIT",
     "authors": [
         {
-            "name": "Zeeshan @ APIMATIC",
-            "email": "zeeshan@apimatic.io",
-            "homepage": "https://github.com/apimatic",
-            "role": "Developer"
-        }
-    ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/apimatic/unirest-php"
+            "name": "APIMatic SDK Generator",
+            "email": "support@apimatic.io",
+            "homepage": "https://apimatic.io",
+            "role": "API Tool"
         }
     ],
     "require": {
@@ -24,7 +18,11 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "apimatic/unirest-php": "dev-master"
+        "mashape/unirest-php": "~3.0.1",
+        "apimatic/jsonmapper": "~1.2.0"
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^2.7"
     },
     "autoload": {
         "psr-4": {
