@@ -29,9 +29,8 @@ class IPProbeResponse implements JsonSerializable
     public $country;
 
     /**
-     * The detected provider type. See API docs for specific provider type details
+     * The detected provider type. See online API docs for specific provider type details
      * @required
-     * @maps provider-type
      * @var string $providerType public property
      */
     public $providerType;
@@ -39,7 +38,6 @@ class IPProbeResponse implements JsonSerializable
     /**
      * ISO 2-letter country code
      * @required
-     * @maps country-code
      * @var string $countryCode public property
      */
     public $countryCode;
@@ -54,7 +52,6 @@ class IPProbeResponse implements JsonSerializable
     /**
      * The domain name of the provider
      * @required
-     * @maps provider-domain
      * @var string $providerDomain public property
      */
     public $providerDomain;
@@ -69,7 +66,6 @@ class IPProbeResponse implements JsonSerializable
     /**
      * The website URL for the provider
      * @required
-     * @maps provider-website
      * @var string $providerWebsite public property
      */
     public $providerWebsite;
@@ -91,10 +87,32 @@ class IPProbeResponse implements JsonSerializable
     /**
      * A description of the provider, usually extracted from the providers website or WHOIS record
      * @required
-     * @maps provider-description
      * @var string $providerDescription public property
      */
     public $providerDescription;
+
+    /**
+     * ISO 2-letter continent code
+     * @required
+     * @var string $continentCode public property
+     */
+    public $continentCode;
+
+    /**
+     * True if this IP belongs to a hosting company. Note that this can still be true even if the provider
+     * type is VPN/proxy, this occurs in the case that the IP is detected as both types
+     * @required
+     * @var bool $isHosting public property
+     */
+    public $isHosting;
+
+    /**
+     * True if this IP belongs to an ISP. Note that this can still be true even if the provider type is
+     * VPN/proxy, this occurs in the case that the IP is detected as both types
+     * @required
+     * @var bool $isIsp public property
+     */
+    public $isIsp;
 
     /**
      * Constructor to set initial or default values of member properties
@@ -109,10 +127,13 @@ class IPProbeResponse implements JsonSerializable
      * @param string $ip                  Initialization value for $this->ip
      * @param string $region              Initialization value for $this->region
      * @param string $providerDescription Initialization value for $this->providerDescription
+     * @param string $continentCode       Initialization value for $this->continentCode
+     * @param bool   $isHosting           Initialization value for $this->isHosting
+     * @param bool   $isIsp               Initialization value for $this->isIsp
      */
     public function __construct()
     {
-        if (11 == func_num_args()) {
+        if (14 == func_num_args()) {
             $this->valid               = func_get_arg(0);
             $this->country             = func_get_arg(1);
             $this->providerType        = func_get_arg(2);
@@ -124,6 +145,9 @@ class IPProbeResponse implements JsonSerializable
             $this->ip                  = func_get_arg(8);
             $this->region              = func_get_arg(9);
             $this->providerDescription = func_get_arg(10);
+            $this->continentCode       = func_get_arg(11);
+            $this->isHosting           = func_get_arg(12);
+            $this->isIsp               = func_get_arg(13);
         }
     }
 
@@ -134,17 +158,20 @@ class IPProbeResponse implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
-        $json['valid']                = $this->valid;
-        $json['country']              = $this->country;
-        $json['provider-type']        = $this->providerType;
-        $json['country-code']         = $this->countryCode;
-        $json['hostname']             = $this->hostname;
-        $json['provider-domain']      = $this->providerDomain;
-        $json['city']                 = $this->city;
-        $json['provider-website']     = $this->providerWebsite;
-        $json['ip']                   = $this->ip;
-        $json['region']               = $this->region;
-        $json['provider-description'] = $this->providerDescription;
+        $json['valid']               = $this->valid;
+        $json['country']             = $this->country;
+        $json['providerType']        = $this->providerType;
+        $json['countryCode']         = $this->countryCode;
+        $json['hostname']            = $this->hostname;
+        $json['providerDomain']      = $this->providerDomain;
+        $json['city']                = $this->city;
+        $json['providerWebsite']     = $this->providerWebsite;
+        $json['ip']                  = $this->ip;
+        $json['region']              = $this->region;
+        $json['providerDescription'] = $this->providerDescription;
+        $json['continentCode']       = $this->continentCode;
+        $json['isHosting']           = $this->isHosting;
+        $json['isIsp']               = $this->isIsp;
 
         return $json;
     }

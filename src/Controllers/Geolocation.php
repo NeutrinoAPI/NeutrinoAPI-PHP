@@ -112,6 +112,73 @@ class Geolocation extends BaseController
     }
 
     /**
+     * Get location information about an IP address and do reverse DNS (PTR) lookups.
+     *
+     * @param string $ip             The IP address
+     * @param bool   $reverseLookup  (optional) Do a reverse DNS (PTR) lookup. This option can add extra delay to the
+     *                               request so only use it if you need it
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function iPInfo(
+        $ip,
+        $reverseLookup = false
+    ) {
+
+        //the base uri for api requests
+        $_queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $_queryBuilder = $_queryBuilder.'/ip-info';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case'    => 'camel',
+            'ip'             => $ip,
+            'reverse-lookup' => (null != $reverseLookup) ? var_export($reverseLookup, true) : false
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPInfoResponse');
+    }
+
+    /**
      * Geocode an address, partial address or the name of a location
      *
      * @param string $address       The address or partial address to try and locate
@@ -185,72 +252,5 @@ class Geolocation extends BaseController
         $mapper = $this->getJsonMapper();
 
         return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\GeocodeAddressResponse');
-    }
-
-    /**
-     * Get location information about an IP address and do reverse DNS (PTR) lookups.
-     *
-     * @param string $ip             The IP address
-     * @param bool   $reverseLookup  (optional) Do a reverse DNS (PTR) lookup. This option can add extra delay to the
-     *                               request so only use it if you need it
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function iPInfo(
-        $ip,
-        $reverseLookup = false
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/ip-info';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case'    => 'camel',
-            'ip'             => $ip,
-            'reverse-lookup' => (null != $reverseLookup) ? var_export($reverseLookup, true) : false
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPInfoResponse');
     }
 }

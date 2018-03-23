@@ -16,14 +16,14 @@ use NeutrinoAPILib\APIHelper;
 class APIErrorException extends APIException
 {
     /**
- * API error code. If set and > 0 then an API error has occurred your request could not be completed
+     * API error code. If set and > 0 then an API error has occurred your request could not be completed
      * @required
      * @var integer $apiError public property
      */
     public $apiError;
 
     /**
- * API error message
+     * API error message
      * @required
      * @var string $apiErrorMsg public property
      */

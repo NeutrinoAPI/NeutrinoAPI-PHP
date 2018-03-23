@@ -43,7 +43,8 @@ class HLRLookupResponse implements JsonSerializable
     public $numberType;
 
     /**
-     * Was the HLR lookup successful. If true then this is a working and registered cell-phone or mobile device (SMS and phone calls will be delivered)
+     * Was the HLR lookup successful. If true then this is a working and registered cell-phone or mobile
+     * device (SMS and phone calls will be delivered)
      * @required
      * @var bool $hlrValid public property
      */

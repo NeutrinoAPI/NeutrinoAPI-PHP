@@ -24,7 +24,7 @@ class HostReputationResponse implements JsonSerializable
     /**
      * An array of objects for each DNSBL checked
      * @required
-     * @var Blacklist[] $lists public property
+     * @var \NeutrinoAPILib\Models\Blacklist[] $lists public property
      */
     public $lists;
 

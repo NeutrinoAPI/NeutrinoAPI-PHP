@@ -64,7 +64,8 @@ class GeocodeReverseResponse implements JsonSerializable
     public $state;
 
     /**
-     * The components which make up the address such as road, city, state etc. May also include additional metadata about the address
+     * The components which make up the address such as road, city, state etc. May also include additional
+     * metadata about the address
      * @required
      * @var array $addressComponents public property
      */

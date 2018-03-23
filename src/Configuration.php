@@ -23,17 +23,11 @@ class Configuration
      * Your user ID
      * @var string
      */
-    /**
-     * @todo Replace the $userId with an appropriate value
-     */
     public static $userId = '';
 
     /**
      * Your API key
      * @var string
-     */
-    /**
-     * @todo Replace the $apiKey with an appropriate value
      */
     public static $apiKey = '';
 }

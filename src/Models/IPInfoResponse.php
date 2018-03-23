@@ -71,27 +71,36 @@ class IPInfoResponse implements JsonSerializable
     public $longitude;
 
     /**
+     * ISO 2-letter continent code
+     * @required
+     * @var string $continentCode public property
+     */
+    public $continentCode;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param bool   $valid       Initialization value for $this->valid
-     * @param string $country     Initialization value for $this->country
-     * @param string $hostname    Initialization value for $this->hostname
-     * @param string $city        Initialization value for $this->city
-     * @param string $countryCode Initialization value for $this->countryCode
-     * @param double $latitude    Initialization value for $this->latitude
-     * @param string $region      Initialization value for $this->region
-     * @param double $longitude   Initialization value for $this->longitude
+     * @param bool   $valid         Initialization value for $this->valid
+     * @param string $country       Initialization value for $this->country
+     * @param string $hostname      Initialization value for $this->hostname
+     * @param string $city          Initialization value for $this->city
+     * @param string $countryCode   Initialization value for $this->countryCode
+     * @param double $latitude      Initialization value for $this->latitude
+     * @param string $region        Initialization value for $this->region
+     * @param double $longitude     Initialization value for $this->longitude
+     * @param string $continentCode Initialization value for $this->continentCode
      */
     public function __construct()
     {
-        if (8 == func_num_args()) {
-            $this->valid       = func_get_arg(0);
-            $this->country     = func_get_arg(1);
-            $this->hostname    = func_get_arg(2);
-            $this->city        = func_get_arg(3);
-            $this->countryCode = func_get_arg(4);
-            $this->latitude    = func_get_arg(5);
-            $this->region      = func_get_arg(6);
-            $this->longitude   = func_get_arg(7);
+        if (9 == func_num_args()) {
+            $this->valid         = func_get_arg(0);
+            $this->country       = func_get_arg(1);
+            $this->hostname      = func_get_arg(2);
+            $this->city          = func_get_arg(3);
+            $this->countryCode   = func_get_arg(4);
+            $this->latitude      = func_get_arg(5);
+            $this->region        = func_get_arg(6);
+            $this->longitude     = func_get_arg(7);
+            $this->continentCode = func_get_arg(8);
         }
     }
 
@@ -102,14 +111,15 @@ class IPInfoResponse implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
-        $json['valid']       = $this->valid;
-        $json['country']     = $this->country;
-        $json['hostname']    = $this->hostname;
-        $json['city']        = $this->city;
-        $json['countryCode'] = $this->countryCode;
-        $json['latitude']    = $this->latitude;
-        $json['region']      = $this->region;
-        $json['longitude']   = $this->longitude;
+        $json['valid']         = $this->valid;
+        $json['country']       = $this->country;
+        $json['hostname']      = $this->hostname;
+        $json['city']          = $this->city;
+        $json['countryCode']   = $this->countryCode;
+        $json['latitude']      = $this->latitude;
+        $json['region']        = $this->region;
+        $json['longitude']     = $this->longitude;
+        $json['continentCode'] = $this->continentCode;
 
         return $json;
     }

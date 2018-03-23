@@ -64,7 +64,8 @@ class UserAgentInfoResponse implements JsonSerializable
     public $isMobile;
 
     /**
-     * The user-agent type, possible values are: desktop-browser, email-client, feed-reader, software-library, media-player, mobile-browser, robot, unknown
+     * The user-agent type, possible values are: desktop-browser, email-client, feed-reader, software-
+     * library, media-player, mobile-browser, robot, unknown
      * @required
      * @var string $type public property
      */
@@ -120,6 +121,20 @@ class UserAgentInfoResponse implements JsonSerializable
     public $operatingSystemVersion;
 
     /**
+     * The browser engine name
+     * @required
+     * @var string $engine public property
+     */
+    public $engine;
+
+    /**
+     * The browser engine version (if detectable)
+     * @required
+     * @var string $engineVersion public property
+     */
+    public $engineVersion;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param integer $mobileScreenWidth      Initialization value for $this->mobileScreenWidth
      * @param string  $mobileBrand            Initialization value for $this->mobileBrand
@@ -136,10 +151,12 @@ class UserAgentInfoResponse implements JsonSerializable
      * @param bool    $isIos                  Initialization value for $this->isIos
      * @param string  $operatingSystemFamily  Initialization value for $this->operatingSystemFamily
      * @param string  $operatingSystemVersion Initialization value for $this->operatingSystemVersion
+     * @param string  $engine                 Initialization value for $this->engine
+     * @param string  $engineVersion          Initialization value for $this->engineVersion
      */
     public function __construct()
     {
-        if (15 == func_num_args()) {
+        if (17 == func_num_args()) {
             $this->mobileScreenWidth      = func_get_arg(0);
             $this->mobileBrand            = func_get_arg(1);
             $this->mobileModel            = func_get_arg(2);
@@ -155,6 +172,8 @@ class UserAgentInfoResponse implements JsonSerializable
             $this->isIos                  = func_get_arg(12);
             $this->operatingSystemFamily  = func_get_arg(13);
             $this->operatingSystemVersion = func_get_arg(14);
+            $this->engine                 = func_get_arg(15);
+            $this->engineVersion          = func_get_arg(16);
         }
     }
 
@@ -180,6 +199,8 @@ class UserAgentInfoResponse implements JsonSerializable
         $json['isIos']                  = $this->isIos;
         $json['operatingSystemFamily']  = $this->operatingSystemFamily;
         $json['operatingSystemVersion'] = $this->operatingSystemVersion;
+        $json['engine']                 = $this->engine;
+        $json['engineVersion']          = $this->engineVersion;
 
         return $json;
     }

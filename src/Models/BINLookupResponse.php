@@ -71,7 +71,8 @@ class BINLookupResponse implements JsonSerializable
     public $issuer;
 
     /**
-     * True if the customer IP is listed on one of our blocklists, see the IP Blocklist API for more details
+     * True if the customer IP is listed on one of our blocklists, see the IP Blocklist API for more
+     * details
      * @required
      * @var bool $ipBlocklisted public property
      */

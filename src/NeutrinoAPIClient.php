@@ -24,43 +24,14 @@ class NeutrinoAPIClient
         Configuration::$userId = $userId ? $userId : Configuration::$userId;
         Configuration::$apiKey = $apiKey ? $apiKey : Configuration::$apiKey;
     }
- 
     /**
-     * Singleton access to DataTools controller
-     * @return Controllers\DataTools The *Singleton* instance
+     * Singleton access to Imaging controller
+     * @return Controllers\Imaging The *Singleton* instance
      */
-    public function getDataTools()
+    public function getImaging()
     {
-        return Controllers\DataTools::getInstance();
+        return Controllers\Imaging::getInstance();
     }
- 
-    /**
-     * Singleton access to ECommerce controller
-     * @return Controllers\ECommerce The *Singleton* instance
-     */
-    public function getECommerce()
-    {
-        return Controllers\ECommerce::getInstance();
-    }
- 
-    /**
-     * Singleton access to Geolocation controller
-     * @return Controllers\Geolocation The *Singleton* instance
-     */
-    public function getGeolocation()
-    {
-        return Controllers\Geolocation::getInstance();
-    }
- 
-    /**
-     * Singleton access to SecurityAndNetworking controller
-     * @return Controllers\SecurityAndNetworking The *Singleton* instance
-     */
-    public function getSecurityAndNetworking()
-    {
-        return Controllers\SecurityAndNetworking::getInstance();
-    }
- 
     /**
      * Singleton access to Telephony controller
      * @return Controllers\Telephony The *Singleton* instance
@@ -69,13 +40,36 @@ class NeutrinoAPIClient
     {
         return Controllers\Telephony::getInstance();
     }
- 
     /**
-     * Singleton access to Imaging controller
-     * @return Controllers\Imaging The *Singleton* instance
+     * Singleton access to DataTools controller
+     * @return Controllers\DataTools The *Singleton* instance
      */
-    public function getImaging()
+    public function getDataTools()
     {
-        return Controllers\Imaging::getInstance();
+        return Controllers\DataTools::getInstance();
+    }
+    /**
+     * Singleton access to SecurityAndNetworking controller
+     * @return Controllers\SecurityAndNetworking The *Singleton* instance
+     */
+    public function getSecurityAndNetworking()
+    {
+        return Controllers\SecurityAndNetworking::getInstance();
+    }
+    /**
+     * Singleton access to Geolocation controller
+     * @return Controllers\Geolocation The *Singleton* instance
+     */
+    public function getGeolocation()
+    {
+        return Controllers\Geolocation::getInstance();
+    }
+    /**
+     * Singleton access to ECommerce controller
+     * @return Controllers\ECommerce The *Singleton* instance
+     */
+    public function getECommerce()
+    {
+        return Controllers\ECommerce::getInstance();
     }
 }

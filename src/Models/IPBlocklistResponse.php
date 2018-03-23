@@ -15,6 +15,13 @@ use JsonSerializable;
 class IPBlocklistResponse implements JsonSerializable
 {
     /**
+     * The IP address
+     * @required
+     * @var string $ip public property
+     */
+    public $ip;
+
+    /**
      * IP is hosting a malicious bot or is part of a botnet
      * @required
      * @var bool $isBot public property
@@ -113,7 +120,15 @@ class IPBlocklistResponse implements JsonSerializable
     public $lastSeen;
 
     /**
+     * An array of strings indicating which blocklists this IP is listed on (empty if not listed)
+     * @required
+     * @var array $blocklists public property
+     */
+    public $blocklists;
+
+    /**
      * Constructor to set initial or default values of member properties
+     * @param string  $ip           Initialization value for $this->ip
      * @param bool    $isBot        Initialization value for $this->isBot
      * @param bool    $isExploitBot Initialization value for $this->isExploitBot
      * @param bool    $isMalware    Initialization value for $this->isMalware
@@ -128,24 +143,27 @@ class IPBlocklistResponse implements JsonSerializable
      * @param bool    $isListed     Initialization value for $this->isListed
      * @param bool    $isVpn        Initialization value for $this->isVpn
      * @param integer $lastSeen     Initialization value for $this->lastSeen
+     * @param array   $blocklists   Initialization value for $this->blocklists
      */
     public function __construct()
     {
-        if (14 == func_num_args()) {
-            $this->isBot        = func_get_arg(0);
-            $this->isExploitBot = func_get_arg(1);
-            $this->isMalware    = func_get_arg(2);
-            $this->isSpider     = func_get_arg(3);
-            $this->isDshield    = func_get_arg(4);
-            $this->listCount    = func_get_arg(5);
-            $this->isProxy      = func_get_arg(6);
-            $this->isHijacked   = func_get_arg(7);
-            $this->isTor        = func_get_arg(8);
-            $this->isSpyware    = func_get_arg(9);
-            $this->isSpamBot    = func_get_arg(10);
-            $this->isListed     = func_get_arg(11);
-            $this->isVpn        = func_get_arg(12);
-            $this->lastSeen     = func_get_arg(13);
+        if (16 == func_num_args()) {
+            $this->ip           = func_get_arg(0);
+            $this->isBot        = func_get_arg(1);
+            $this->isExploitBot = func_get_arg(2);
+            $this->isMalware    = func_get_arg(3);
+            $this->isSpider     = func_get_arg(4);
+            $this->isDshield    = func_get_arg(5);
+            $this->listCount    = func_get_arg(6);
+            $this->isProxy      = func_get_arg(7);
+            $this->isHijacked   = func_get_arg(8);
+            $this->isTor        = func_get_arg(9);
+            $this->isSpyware    = func_get_arg(10);
+            $this->isSpamBot    = func_get_arg(11);
+            $this->isListed     = func_get_arg(12);
+            $this->isVpn        = func_get_arg(13);
+            $this->lastSeen     = func_get_arg(14);
+            $this->blocklists   = func_get_arg(15);
         }
     }
 
@@ -156,6 +174,7 @@ class IPBlocklistResponse implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
+        $json['ip']           = $this->ip;
         $json['isBot']        = $this->isBot;
         $json['isExploitBot'] = $this->isExploitBot;
         $json['isMalware']    = $this->isMalware;
@@ -170,6 +189,7 @@ class IPBlocklistResponse implements JsonSerializable
         $json['isListed']     = $this->isListed;
         $json['isVpn']        = $this->isVpn;
         $json['lastSeen']     = $this->lastSeen;
+        $json['blocklists']   = $this->blocklists;
 
         return $json;
     }

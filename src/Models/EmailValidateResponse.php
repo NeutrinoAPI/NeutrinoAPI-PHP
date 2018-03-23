@@ -71,6 +71,21 @@ class EmailValidateResponse implements JsonSerializable
     public $typosFixed;
 
     /**
+     * True if this address belongs to a person. False if this is a role based address, e.g. admin@, help@,
+     * office@, etc.
+     * @required
+     * @var bool $isPersonal public property
+     */
+    public $isPersonal;
+
+    /**
+     * The email service provider domain
+     * @required
+     * @var string $provider public property
+     */
+    public $provider;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param bool   $valid        Initialization value for $this->valid
      * @param bool   $syntaxError  Initialization value for $this->syntaxError
@@ -80,10 +95,12 @@ class EmailValidateResponse implements JsonSerializable
      * @param string $email        Initialization value for $this->email
      * @param bool   $isDisposable Initialization value for $this->isDisposable
      * @param bool   $typosFixed   Initialization value for $this->typosFixed
+     * @param bool   $isPersonal   Initialization value for $this->isPersonal
+     * @param string $provider     Initialization value for $this->provider
      */
     public function __construct()
     {
-        if (8 == func_num_args()) {
+        if (10 == func_num_args()) {
             $this->valid        = func_get_arg(0);
             $this->syntaxError  = func_get_arg(1);
             $this->domain       = func_get_arg(2);
@@ -92,6 +109,8 @@ class EmailValidateResponse implements JsonSerializable
             $this->email        = func_get_arg(5);
             $this->isDisposable = func_get_arg(6);
             $this->typosFixed   = func_get_arg(7);
+            $this->isPersonal   = func_get_arg(8);
+            $this->provider     = func_get_arg(9);
         }
     }
 
@@ -110,6 +129,8 @@ class EmailValidateResponse implements JsonSerializable
         $json['email']        = $this->email;
         $json['isDisposable'] = $this->isDisposable;
         $json['typosFixed']   = $this->typosFixed;
+        $json['isPersonal']   = $this->isPersonal;
+        $json['provider']     = $this->provider;
 
         return $json;
     }

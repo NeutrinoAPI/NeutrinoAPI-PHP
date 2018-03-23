@@ -110,6 +110,72 @@ class Telephony extends BaseController
     }
 
     /**
+     * Make an automated call to any valid phone number and playback an audio message
+     *
+     * @param string $number      The phone number to call. Must be valid international format
+     * @param string $audioUrl    A URL to a valid audio file. Accepted audio formats are: MP3, WAV, OGG
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function phonePlayback(
+        $number,
+        $audioUrl
+    ) {
+
+        //the base uri for api requests
+        $_queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $_queryBuilder = $_queryBuilder.'/phone-playback';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case' => 'camel',
+            'number'      => $number,
+            'audio-url'   => $audioUrl
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\PhonePlaybackResponse');
+    }
+
+    /**
      * Check if a security code from one of the verify APIs is valid
      *
      * @param integer $securityCode  The security code to verify
@@ -252,72 +318,6 @@ class Telephony extends BaseController
         $mapper = $this->getJsonMapper();
 
         return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\SMSVerifyResponse');
-    }
-
-    /**
-     * Make an automated call to any valid phone number and playback an audio message
-     *
-     * @param string $number      The phone number to call. Must be valid international format
-     * @param string $audioUrl    A URL to a valid audio file. Accepted audio formats are: MP3, WAV, OGG
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function phonePlayback(
-        $number,
-        $audioUrl
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/phone-playback';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case' => 'camel',
-            'number'      => $number,
-            'audio-url'   => $audioUrl
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\PhonePlaybackResponse');
     }
 
     /**

@@ -42,25 +42,23 @@ class DataTools extends BaseController
     }
 
     /**
-     * A powerful unit and currency conversion tool
+     * Parse, validate and clean an email address
      *
-     * @param string $fromValue   The value to convert from
-     * @param string $fromType    The type of the value to convert from
-     * @param string $toType      The type to convert to
+     * @param string $email       The email address
+     * @param bool   $fixTypos    (optional) Automatically attempt to fix typos in the address
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function convert(
-        $fromValue,
-        $fromType,
-        $toType
+    public function emailValidate(
+        $email,
+        $fixTypos = false
     ) {
 
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
         
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/convert';
+        $_queryBuilder = $_queryBuilder.'/email-validate';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -80,9 +78,8 @@ class DataTools extends BaseController
         //prepare parameters
         $_parameters = array (
             'output-case' => 'camel',
-            'from-value'  => $fromValue,
-            'from-type'   => $fromType,
-            'to-type'     => $toType
+            'email'       => $email,
+            'fix-typos'   => (null != $fixTypos) ? var_export($fixTypos, true) : false
         );
 
         //call on-before Http callback
@@ -107,7 +104,7 @@ class DataTools extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\ConvertResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\EmailValidateResponse');
     }
 
     /**
@@ -178,23 +175,25 @@ class DataTools extends BaseController
     }
 
     /**
-     * Parse, validate and clean an email address
+     * A powerful unit and currency conversion tool
      *
-     * @param string $email       The email address
-     * @param bool   $fixTypos    (optional) Automatically attempt to fix typos in the address
+     * @param string $fromValue   The value to convert from
+     * @param string $fromType    The type of the value to convert from
+     * @param string $toType      The type to convert to
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function emailValidate(
-        $email,
-        $fixTypos = false
+    public function convert(
+        $fromValue,
+        $fromType,
+        $toType
     ) {
 
         //the base uri for api requests
         $_queryBuilder = Configuration::$BASEURI;
         
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/email-validate';
+        $_queryBuilder = $_queryBuilder.'/convert';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -214,8 +213,9 @@ class DataTools extends BaseController
         //prepare parameters
         $_parameters = array (
             'output-case' => 'camel',
-            'email'       => $email,
-            'fix-typos'   => (null != $fixTypos) ? var_export($fixTypos, true) : false
+            'from-value'  => $fromValue,
+            'from-type'   => $fromType,
+            'to-type'     => $toType
         );
 
         //call on-before Http callback
@@ -240,7 +240,142 @@ class DataTools extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\EmailValidateResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\ConvertResponse');
+    }
+
+    /**
+     * Parse, validate and get location information about a phone number
+     *
+     * @param string $number       The phone number
+     * @param string $countryCode  (optional) ISO 2-letter country code, assume numbers are based in this country. If
+     *                             not set numbers are assumed to be in international format (with or without the
+     *                             leading + sign)
+     * @param string $ip           (optional) Pass in a users IP address and we will assume numbers are based in the
+     *                             country of the IP address
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function phoneValidate(
+        $number,
+        $countryCode = null,
+        $ip = null
+    ) {
+
+        //the base uri for api requests
+        $_queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $_queryBuilder = $_queryBuilder.'/phone-validate';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case'  => 'camel',
+            'number'       => $number,
+            'country-code' => $countryCode,
+            'ip'           => $ip
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\PhoneValidateResponse');
+    }
+
+    /**
+     * Parse, validate and get detailed user-agent information from a user agent string
+     *
+     * @param string $userAgent   A user-agent string
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function userAgentInfo(
+        $userAgent
+    ) {
+
+        //the base uri for api requests
+        $_queryBuilder = Configuration::$BASEURI;
+        
+        //prepare query string for API call
+        $_queryBuilder = $_queryBuilder.'/user-agent-info';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => 'APIMATIC 2.0',
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case' => 'camel',
+            'user-agent'  => $userAgent
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\UserAgentInfoResponse');
     }
 
     /**
@@ -305,137 +440,6 @@ class DataTools extends BaseController
         $this->validateResponse($_httpResponse, $_httpContext);
 
         return $response->body;
-    }
-
-    /**
-     * Code highlight will take raw source code and convert into nicely formatted HTML with syntax and
-     * keyword highlighting
-     *
-     * @param string $content           The source content. This can be either a URL to load from or an actual content
-     *                                  string
-     * @param string $type              The code type. See the API docs for all supported types
-     * @param bool   $addKeywordLinks   (optional) Add links on source code keywords to the relevant language
-     *                                  documentation
-     * @return string response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function codeHighlight(
-        $content,
-        $type,
-        $addKeywordLinks = false
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/code-highlight';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'      => 'APIMATIC 2.0'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'content'           => $content,
-            'type'              => $type,
-            'add-keyword-links' => (null != $addKeywordLinks) ? var_export($addKeywordLinks, true) : false
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        return $response->body;
-    }
-
-    /**
-     * Parse, validate and get detailed user-agent information from a user agent string
-     *
-     * @param string $userAgent   A user-agent string
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function userAgentInfo(
-        $userAgent
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/user-agent-info';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case' => 'camel',
-            'user-agent'  => $userAgent
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\UserAgentInfoResponse');
     }
 
     /**
@@ -511,77 +515,5 @@ class DataTools extends BaseController
         $mapper = $this->getJsonMapper();
 
         return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\HTMLExtractResponse');
-    }
-
-    /**
-     * Parse, validate and get location information about a phone number
-     *
-     * @param string $number       The phone number
-     * @param string $countryCode  (optional) ISO 2-letter country code, assume numbers are based in this country. If
-     *                             not set numbers are assumed to be in international format (with or without the
-     *                             leading + sign)
-     * @param string $ip           (optional) Pass in a users IP address and we will assume numbers are based in the
-     *                             country of the IP address
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function phoneValidate(
-        $number,
-        $countryCode = null,
-        $ip = null
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/phone-validate';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case'  => 'camel',
-            'number'       => $number,
-            'country-code' => $countryCode,
-            'ip'           => $ip
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\PhoneValidateResponse');
     }
 }

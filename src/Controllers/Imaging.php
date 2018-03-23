@@ -264,31 +264,54 @@ class Imaging extends BaseController
     /**
      * Render HTML and HTML5 content to PDF, JPG or PNG
      *
-     * @param string  $content       The HTML content. This can be either a URL to load HTML from or an actual HTML
-     *                               content string
-     * @param string  $format        (optional) Which format to output, available options are: PDF, PNG, JPG
-     * @param string  $pageSize      (optional) Set the document page size, can be one of: A0 - A9, B0 - B10, Comm10E,
-     *                               DLE or Letter
-     * @param string  $title         (optional) The document title
-     * @param integer $margin        (optional) The document margin (in mm)
-     * @param integer $marginLeft    (optional) The document left margin (in mm)
-     * @param integer $marginRight   (optional) The document right margin (in mm)
-     * @param integer $marginTop     (optional) The document top margin (in mm)
-     * @param integer $marginBottom  (optional) The document bottom margin (in mm)
-     * @param bool    $landscape     (optional) Set the document to lanscape orientation
-     * @param double  $zoom          (optional) Set the zoom factor when rendering the page (2.0 for double size, 0.5
-     *                               for half size)
-     * @param bool    $grayscale     (optional) Render the final document in grayscale
-     * @param bool    $mediaPrint    (optional) Use @media print CSS styles to render the document
-     * @param bool    $mediaQueries  (optional) Activate all @media queries before rendering. This can be useful if you
-     *                               wan't to render the mobile version of a responsive website
-     * @param bool    $forms         (optional) Generate real (fillable) PDF forms from HTML forms
-     * @param string  $css           (optional) Inject custom CSS into the HTML. e.g. 'body { background-color: red;}'
-     * @param integer $imageWidth    (optional) If rendering to an image format (PNG or JPG) use this image width (in
-     *                               pixels)
-     * @param integer $imageHeight   (optional) If rendering to an image format (PNG or JPG) use this image height (in
-     *                               pixels). The default is automatic which dynamically sets the image height based on
-     *                               the content
+     * @param string  $content            The HTML content. This can be either a URL to load HTML from or an actual
+     *                                    HTML content string
+     * @param string  $format             (optional) Which format to output, available options are: PDF, PNG, JPG
+     * @param string  $pageSize           (optional) Set the document page size, can be one of: A0 - A9, B0 - B10,
+     *                                    Comm10E, DLE or Letter
+     * @param string  $title              (optional) The document title
+     * @param integer $margin             (optional) The document margin (in mm)
+     * @param integer $marginLeft         (optional) The document left margin (in mm)
+     * @param integer $marginRight        (optional) The document right margin (in mm)
+     * @param integer $marginTop          (optional) The document top margin (in mm)
+     * @param integer $marginBottom       (optional) The document bottom margin (in mm)
+     * @param bool    $landscape          (optional) Set the document to lanscape orientation
+     * @param double  $zoom               (optional) Set the zoom factor when rendering the page (2.0 for double size,
+     *                                    0.5 for half size)
+     * @param bool    $grayscale          (optional) Render the final document in grayscale
+     * @param bool    $mediaPrint         (optional) Use @media print CSS styles to render the document
+     * @param bool    $mediaQueries       (optional) Activate all @media queries before rendering. This can be useful
+     *                                    if you wan't to render the mobile version of a responsive website
+     * @param bool    $forms              (optional) Generate real (fillable) PDF forms from HTML forms
+     * @param string  $css                (optional) Inject custom CSS into the HTML. e.g. 'body { background-color:
+     *                                    red;}'
+     * @param integer $imageWidth         (optional) If rendering to an image format (PNG or JPG) use this image width
+     *                                    (in pixels)
+     * @param integer $imageHeight        (optional) If rendering to an image format (PNG or JPG) use this image height
+     *                                    (in pixels). The default is automatic which dynamically sets the image height
+     *                                    based on the content
+     * @param integer $renderDelay        (optional) Number of milliseconds to wait before rendering the page (can be
+     *                                    useful for pages with animations etc)
+     * @param string  $headerTextLeft     (optional) Text to print to the left-hand side header of each page. e.g. 'My
+     *                                    header - Page {page_number} of {total_pages}'
+     * @param string  $headerTextCenter   (optional) Text to print to the center header of each page
+     * @param string  $headerTextRight    (optional) Text to print to the right-hand side header of each page
+     * @param integer $headerSize         (optional) The height of your header (in mm)
+     * @param string  $headerFont         (optional) Set the header font. Fonts available: Times, Courier, Helvetica,
+     *                                    Arial
+     * @param string  $headerFontSize     (optional) Set the header font size (in pt)
+     * @param bool    $headerLine         (optional) Draw a full page width horizontal line under your header
+     * @param string  $footerTextLeft     (optional) Text to print to the left-hand side footer of each page. e.g. 'My
+     *                                    footer - Page {page_number} of {total_pages}'
+     * @param string  $footerTextCenter   (optional) Text to print to the center header of each page
+     * @param string  $footerTextRight    (optional) Text to print to the right-hand side header of each page
+     * @param integer $footerSize         (optional) The height of your footer (in mm)
+     * @param string  $footerFont         (optional) Set the footer font. Fonts available: Times, Courier, Helvetica,
+     *                                    Arial
+     * @param integer $footerFontSize     (optional) Set the footer font size (in pt)
+     * @param bool    $footerLine         (optional) Draw a full page width horizontal line above your footer
+     * @param integer $pageWidth          (optional) Set the PDF page width explicitly (in mm)
+     * @param integer $pageHeight         (optional) Set the PDF page height explicitly (in mm)
      * @return string response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -310,7 +333,24 @@ class Imaging extends BaseController
         $forms = false,
         $css = null,
         $imageWidth = 1024,
-        $imageHeight = null
+        $imageHeight = null,
+        $renderDelay = null,
+        $headerTextLeft = null,
+        $headerTextCenter = null,
+        $headerTextRight = null,
+        $headerSize = 9,
+        $headerFont = 'Courier',
+        $headerFontSize = '11',
+        $headerLine = false,
+        $footerTextLeft = null,
+        $footerTextCenter = null,
+        $footerTextRight = null,
+        $footerSize = 9,
+        $footerFont = 'Courier',
+        $footerFontSize = 11,
+        $footerLine = false,
+        $pageWidth = null,
+        $pageHeight = null
     ) {
 
         //the base uri for api requests
@@ -330,30 +370,47 @@ class Imaging extends BaseController
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0'
+            'user-agent'       => 'APIMATIC 2.0'
         );
 
         //prepare parameters
         $_parameters = array (
-            'output-case'   => 'camel',
-            'content'       => $content,
-            'format'        => (null != $format) ? $format : 'PDF',
-            'page-size'     => (null != $pageSize) ? $pageSize : 'A4',
-            'title'         => $title,
-            'margin'        => (null != $margin) ? $margin : 0,
-            'margin-left'   => (null != $marginLeft) ? $marginLeft : 0,
-            'margin-right'  => (null != $marginRight) ? $marginRight : 0,
-            'margin-top'    => (null != $marginTop) ? $marginTop : 0,
-            'margin-bottom' => (null != $marginBottom) ? $marginBottom : 0,
-            'landscape'     => (null != $landscape) ? var_export($landscape, true) : false,
-            'zoom'          => (null != $zoom) ? $zoom : 1.0,
-            'grayscale'     => (null != $grayscale) ? var_export($grayscale, true) : false,
-            'media-print'   => (null != $mediaPrint) ? var_export($mediaPrint, true) : false,
-            'media-queries' => (null != $mediaQueries) ? var_export($mediaQueries, true) : false,
-            'forms'         => (null != $forms) ? var_export($forms, true) : false,
-            'css'           => $css,
-            'image-width'   => (null != $imageWidth) ? $imageWidth : 1024,
-            'image-height'  => $imageHeight
+            'output-case'        => 'camel',
+            'content'            => $content,
+            'format'             => (null != $format) ? $format : 'PDF',
+            'page-size'          => (null != $pageSize) ? $pageSize : 'A4',
+            'title'              => $title,
+            'margin'             => (null != $margin) ? $margin : 0,
+            'margin-left'        => (null != $marginLeft) ? $marginLeft : 0,
+            'margin-right'       => (null != $marginRight) ? $marginRight : 0,
+            'margin-top'         => (null != $marginTop) ? $marginTop : 0,
+            'margin-bottom'      => (null != $marginBottom) ? $marginBottom : 0,
+            'landscape'          => (null != $landscape) ? var_export($landscape, true) : false,
+            'zoom'               => (null != $zoom) ? $zoom : 1.0,
+            'grayscale'          => (null != $grayscale) ? var_export($grayscale, true) : false,
+            'media-print'        => (null != $mediaPrint) ? var_export($mediaPrint, true) : false,
+            'media-queries'      => (null != $mediaQueries) ? var_export($mediaQueries, true) : false,
+            'forms'              => (null != $forms) ? var_export($forms, true) : false,
+            'css'                => $css,
+            'image-width'        => (null != $imageWidth) ? $imageWidth : 1024,
+            'image-height'       => $imageHeight,
+            'render-delay'       => $renderDelay,
+            'header-text-left'   => $headerTextLeft,
+            'header-text-center' => $headerTextCenter,
+            'header-text-right'  => $headerTextRight,
+            'header-size'        => (null != $headerSize) ? $headerSize : 9,
+            'header-font'        => (null != $headerFont) ? $headerFont : 'Courier',
+            'header-font-size'   => (null != $headerFontSize) ? $headerFontSize : '11',
+            'header-line'        => (null != $headerLine) ? var_export($headerLine, true) : false,
+            'footer-text-left'   => $footerTextLeft,
+            'footer-text-center' => $footerTextCenter,
+            'footer-text-right'  => $footerTextRight,
+            'footer-size'        => (null != $footerSize) ? $footerSize : 9,
+            'footer-font'        => (null != $footerFont) ? $footerFont : 'Courier',
+            'footer-font-size'   => (null != $footerFontSize) ? $footerFontSize : 11,
+            'footer-line'        => (null != $footerLine) ? var_export($footerLine, true) : false,
+            'page-width'         => $pageWidth,
+            'page-height'        => $pageHeight
         );
 
         //call on-before Http callback

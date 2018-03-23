@@ -24,7 +24,7 @@ class GeocodeAddressResponse implements JsonSerializable
     /**
      * Array of matching location objects
      * @required
-     * @var Location[] $locations public property
+     * @var \NeutrinoAPILib\Models\Location[] $locations public property
      */
     public $locations;
 

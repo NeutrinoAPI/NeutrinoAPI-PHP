@@ -29,7 +29,8 @@ class PhoneVerifyResponse implements JsonSerializable
     public $calling;
 
     /**
-     * The security code generated, you can save this code to perform your own verification or you can use the Verify Security Code API
+     * The security code generated, you can save this code to perform your own verification or you can use
+     * the Verify Security Code API
      * @required
      * @var string $securityCode public property
      */
