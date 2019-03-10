@@ -17,19 +17,19 @@ class URLInfoResponse implements JsonSerializable
     /**
      * The HTTP status message assoicated with the status code
      * @required
-     * @var string $httpStatusMessage public property
+     * @var integer $httpStatusMessage public property
      */
     public $httpStatusMessage;
 
     /**
-     * Server IP geo-location: full region name (if detectable)
+     * The servers IP geo-location: full region name (if detectable)
      * @required
      * @var string $serverRegion public property
      */
     public $serverRegion;
 
     /**
-     * A key:value map of the URL query paramaters
+     * A key-value map of the URL query paramaters
      * @required
      * @var array $query public property
      */
@@ -50,7 +50,7 @@ class URLInfoResponse implements JsonSerializable
     public $urlPort;
 
     /**
-     * Server IP geo-location: full country name
+     * The servers IP geo-location: full country name
      * @required
      * @var string $serverCountry public property
      */
@@ -64,7 +64,7 @@ class URLInfoResponse implements JsonSerializable
     public $real;
 
     /**
-     * Server IP geo-location: full city name (if detectable)
+     * The servers IP geo-location: full city name (if detectable)
      * @required
      * @var string $serverCity public property
      */
@@ -78,7 +78,7 @@ class URLInfoResponse implements JsonSerializable
     public $urlPath;
 
     /**
-     * The fully qualified URL. This may be different to the URL requested if http-redirect is True
+     * The fully qualified URL. This may be different to the URL requested if http-redirect is true
      * @required
      * @var string $url public property
      */
@@ -92,16 +92,16 @@ class URLInfoResponse implements JsonSerializable
     public $valid;
 
     /**
-     * The server hostname (PTR)
+     * The servers hostname (PTR record)
      * @required
      * @var string $serverHostname public property
      */
     public $serverHostname;
 
     /**
-     * The time taken to load the URL content (in seconds)
+     * The time taken to load the URL content in seconds
      * @required
-     * @var double $loadTime public property
+     * @var integer $loadTime public property
      */
     public $loadTime;
 
@@ -120,21 +120,21 @@ class URLInfoResponse implements JsonSerializable
     public $contentSize;
 
     /**
-     * The HTTP status code this URL responded with
+     * The HTTP status code this URL responded with. An HTTP status of 0 indicates a network level issue
      * @required
      * @var integer $httpStatus public property
      */
     public $httpStatus;
 
     /**
-     * Server IP geo-location: ISO 2-letter country code
+     * The servers IP geo-location: ISO 2-letter country code
      * @required
      * @var string $serverCountryCode public property
      */
     public $serverCountryCode;
 
     /**
-     * The encoding type the URL uses
+     * The encoding format the URL uses
      * @required
      * @var string $contentEncoding public property
      */
@@ -148,21 +148,21 @@ class URLInfoResponse implements JsonSerializable
     public $serverIp;
 
     /**
-     * The URL protocol (usually http or https)
+     * The URL protocol, usually http or https
      * @required
      * @var string $urlProtocol public property
      */
     public $urlProtocol;
 
     /**
-     * The content-type the URL points to
+     * The content-type this URL serves
      * @required
      * @var string $contentType public property
      */
     public $contentType;
 
     /**
-     * True if this URL responded with a HTTP redirect
+     * True if this URL responded with an HTTP redirect
      * @required
      * @var bool $httpRedirect public property
      */
@@ -177,7 +177,7 @@ class URLInfoResponse implements JsonSerializable
 
     /**
      * Constructor to set initial or default values of member properties
-     * @param string  $httpStatusMessage Initialization value for $this->httpStatusMessage
+     * @param integer $httpStatusMessage Initialization value for $this->httpStatusMessage
      * @param string  $serverRegion      Initialization value for $this->serverRegion
      * @param array   $query             Initialization value for $this->query
      * @param string  $serverName        Initialization value for $this->serverName
@@ -189,7 +189,7 @@ class URLInfoResponse implements JsonSerializable
      * @param string  $url               Initialization value for $this->url
      * @param bool    $valid             Initialization value for $this->valid
      * @param string  $serverHostname    Initialization value for $this->serverHostname
-     * @param double  $loadTime          Initialization value for $this->loadTime
+     * @param integer $loadTime          Initialization value for $this->loadTime
      * @param bool    $httpOk            Initialization value for $this->httpOk
      * @param integer $contentSize       Initialization value for $this->contentSize
      * @param integer $httpStatus        Initialization value for $this->httpStatus

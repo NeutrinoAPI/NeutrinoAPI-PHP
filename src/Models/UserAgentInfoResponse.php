@@ -15,78 +15,79 @@ use JsonSerializable;
 class UserAgentInfoResponse implements JsonSerializable
 {
     /**
-     * Mobile device screen width (in px)
+     * The estimated mobile device screen width in CSS 'px'
      * @required
      * @var integer $mobileScreenWidth public property
      */
     public $mobileScreenWidth;
 
     /**
-     * Mobile device brand
+     * The mobile device brand
      * @required
      * @var string $mobileBrand public property
      */
     public $mobileBrand;
 
     /**
-     * Mobile device model
+     * The mobile device model
      * @required
      * @var string $mobileModel public property
      */
     public $mobileModel;
 
     /**
-     * Producer or manufacturer
+     * The producer or manufacturer of the user agent
      * @required
      * @var string $producer public property
      */
     public $producer;
 
     /**
-     * Browser software name
+     * The browser software name
      * @required
      * @var string $browserName public property
      */
     public $browserName;
 
     /**
-     * Mobile device screen height (in px)
+     * The estimated mobile device screen height in CSS 'px'
      * @required
      * @var integer $mobileScreenHeight public property
      */
     public $mobileScreenHeight;
 
     /**
-     * True if this is a mobile user-agent
+     * True if this is a mobile user agent
      * @required
      * @var bool $isMobile public property
      */
     public $isMobile;
 
     /**
-     * The user-agent type, possible values are: desktop-browser, email-client, feed-reader, software-
-     * library, media-player, mobile-browser, robot, unknown
+     * The user agent type, possible values are:<br/><ul><li>desktop-browser</li><li>mobile-
+     * browser</li><li>email-client</li><li>feed-reader</li><li>software-library</li><li>media-player
+     * (includes smart TVs)</li><li>robot</li><li>unknown</li></ul>
      * @required
      * @var string $type public property
      */
     public $type;
 
     /**
-     * Software version
+     * The browser software version
      * @required
      * @var string $version public property
      */
     public $version;
 
     /**
-     * Operating system
+     * The full operating system name which may include the major version number or code name
      * @required
      * @var string $operatingSystem public property
      */
     public $operatingSystem;
 
     /**
-     * Mobile device browser
+     * The mobile device browser name (this is usually the same as the browser name)
      * @required
      * @var string $mobileBrowser public property
      */

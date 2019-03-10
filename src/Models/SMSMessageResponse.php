@@ -12,15 +12,8 @@ use JsonSerializable;
 /**
  * @todo Write general description for this model
  */
-class PhonePlaybackResponse implements JsonSerializable
+class SMSMessageResponse implements JsonSerializable
 {
-    /**
-     * True if the call is being made now
-     * @required
-     * @var bool $calling public property
-     */
-    public $calling;
-
     /**
      * True if this a valid phone number
      * @required
@@ -29,15 +22,22 @@ class PhonePlaybackResponse implements JsonSerializable
     public $numberValid;
 
     /**
+     * True if the SMS has been sent
+     * @required
+     * @var bool $sent public property
+     */
+    public $sent;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param bool $calling     Initialization value for $this->calling
      * @param bool $numberValid Initialization value for $this->numberValid
+     * @param bool $sent        Initialization value for $this->sent
      */
     public function __construct()
     {
         if (2 == func_num_args()) {
-            $this->calling     = func_get_arg(0);
-            $this->numberValid = func_get_arg(1);
+            $this->numberValid = func_get_arg(0);
+            $this->sent        = func_get_arg(1);
         }
     }
 
@@ -48,8 +48,8 @@ class PhonePlaybackResponse implements JsonSerializable
     public function jsonSerialize()
     {
         $json = array();
-        $json['calling']     = $this->calling;
         $json['numberValid'] = $this->numberValid;
+        $json['sent']        = $this->sent;
 
         return $json;
     }

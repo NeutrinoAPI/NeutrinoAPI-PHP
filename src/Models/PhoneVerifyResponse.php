@@ -15,7 +15,7 @@ use JsonSerializable;
 class PhoneVerifyResponse implements JsonSerializable
 {
     /**
-     * Is this a valid phone number
+     * True if this a valid phone number
      * @required
      * @var bool $numberValid public property
      */
@@ -30,7 +30,7 @@ class PhoneVerifyResponse implements JsonSerializable
 
     /**
      * The security code generated, you can save this code to perform your own verification or you can use
-     * the Verify Security Code API
+     * the <a href='https://www.neutrinoapi.com/api/verify-security-code/'>Verify Security Code API</a>
      * @required
      * @var string $securityCode public property
      */

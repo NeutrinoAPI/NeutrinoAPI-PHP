@@ -15,7 +15,7 @@ use JsonSerializable;
 class BadWordFilterResponse implements JsonSerializable
 {
     /**
-     * Array of the bad words found
+     * An array of the bad words found
      * @required
      * @var array $badWordsList public property
      */

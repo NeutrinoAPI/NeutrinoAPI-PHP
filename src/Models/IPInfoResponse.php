@@ -15,7 +15,7 @@ use JsonSerializable;
 class IPInfoResponse implements JsonSerializable
 {
     /**
-     * Is this a valid IP address
+     * Is this a valid IPv4 or IPv6 address
      * @required
      * @var bool $valid public property
      */
@@ -52,7 +52,7 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location latitude
      * @required
-     * @var double $latitude public property
+     * @var integer $latitude public property
      */
     public $latitude;
 
@@ -66,7 +66,7 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location longitude
      * @required
-     * @var double $longitude public property
+     * @var integer $longitude public property
      */
     public $longitude;
 
@@ -78,20 +78,44 @@ class IPInfoResponse implements JsonSerializable
     public $continentCode;
 
     /**
+     * The IP address
+     * @required
+     * @var string $ip public property
+     */
+    public $ip;
+
+    /**
+     * ISO 3-letter country code
+     * @required
+     * @var string $countryCode3 public property
+     */
+    public $countryCode3;
+
+    /**
+     * ISO 4217 currency code associated with the country
+     * @required
+     * @var string $currencyCode public property
+     */
+    public $currencyCode;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param bool   $valid         Initialization value for $this->valid
-     * @param string $country       Initialization value for $this->country
-     * @param string $hostname      Initialization value for $this->hostname
-     * @param string $city          Initialization value for $this->city
-     * @param string $countryCode   Initialization value for $this->countryCode
-     * @param double $latitude      Initialization value for $this->latitude
-     * @param string $region        Initialization value for $this->region
-     * @param double $longitude     Initialization value for $this->longitude
-     * @param string $continentCode Initialization value for $this->continentCode
+     * @param bool    $valid         Initialization value for $this->valid
+     * @param string  $country       Initialization value for $this->country
+     * @param string  $hostname      Initialization value for $this->hostname
+     * @param string  $city          Initialization value for $this->city
+     * @param string  $countryCode   Initialization value for $this->countryCode
+     * @param integer $latitude      Initialization value for $this->latitude
+     * @param string  $region        Initialization value for $this->region
+     * @param integer $longitude     Initialization value for $this->longitude
+     * @param string  $continentCode Initialization value for $this->continentCode
+     * @param string  $ip            Initialization value for $this->ip
+     * @param string  $countryCode3  Initialization value for $this->countryCode3
+     * @param string  $currencyCode  Initialization value for $this->currencyCode
      */
     public function __construct()
     {
-        if (9 == func_num_args()) {
+        if (12 == func_num_args()) {
             $this->valid         = func_get_arg(0);
             $this->country       = func_get_arg(1);
             $this->hostname      = func_get_arg(2);
@@ -101,6 +125,9 @@ class IPInfoResponse implements JsonSerializable
             $this->region        = func_get_arg(6);
             $this->longitude     = func_get_arg(7);
             $this->continentCode = func_get_arg(8);
+            $this->ip            = func_get_arg(9);
+            $this->countryCode3  = func_get_arg(10);
+            $this->currencyCode  = func_get_arg(11);
         }
     }
 
@@ -120,6 +147,9 @@ class IPInfoResponse implements JsonSerializable
         $json['region']        = $this->region;
         $json['longitude']     = $this->longitude;
         $json['continentCode'] = $this->continentCode;
+        $json['ip']            = $this->ip;
+        $json['countryCode3']  = $this->countryCode3;
+        $json['currencyCode']  = $this->currencyCode;
 
         return $json;
     }

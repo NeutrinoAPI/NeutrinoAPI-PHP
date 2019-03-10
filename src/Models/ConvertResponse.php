@@ -15,7 +15,7 @@ use JsonSerializable;
 class ConvertResponse implements JsonSerializable
 {
     /**
-     * Was the coversion successful and produced a valid result
+     * True if the coversion was successful and produced a valid result
      * @required
      * @var bool $valid public property
      */

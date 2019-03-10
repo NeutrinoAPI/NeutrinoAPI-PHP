@@ -42,12 +42,13 @@ class Geolocation extends BaseController
     }
 
     /**
-     * Convert a geographic coordinate (latitude and longitude) into a real world address or location.
+     * Convert a geographic coordinate (latitude and longitude) into a real world address or location. See:
+     * https://www.neutrinoapi.com/api/geocode-reverse/
      *
-     * @param double $latitude      The location latitude
-     * @param double $longitude     The location longitude
-     * @param string $languageCode  (optional) The language to display results in, available languages are: de, en, es,
-     *                              fr, it, pt, ru
+     * @param string $latitude      The location latitude in decimal degrees format
+     * @param string $longitude     The location longitude in decimal degrees format
+     * @param string $languageCode  (optional) The language to display results in, available languages are:<ul><li>de,
+     *                              en, es, fr, it, pt, ru</li></ul>
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -57,11 +58,8 @@ class Geolocation extends BaseController
         $languageCode = 'en'
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/geocode-reverse';
+        $_queryBuilder = '/geocode-reverse';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -70,11 +68,11 @@ class Geolocation extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -112,9 +110,10 @@ class Geolocation extends BaseController
     }
 
     /**
-     * Get location information about an IP address and do reverse DNS (PTR) lookups.
+     * Get location information about an IP address and do reverse DNS (PTR) lookups. See: https://www.
+     * neutrinoapi.com/api/ip-info/
      *
-     * @param string $ip             The IP address
+     * @param string $ip             IPv4 or IPv6 address
      * @param bool   $reverseLookup  (optional) Do a reverse DNS (PTR) lookup. This option can add extra delay to the
      *                               request so only use it if you need it
      * @return mixed response from the API call
@@ -125,11 +124,8 @@ class Geolocation extends BaseController
         $reverseLookup = false
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/ip-info';
+        $_queryBuilder = '/ip-info';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -138,11 +134,11 @@ class Geolocation extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -179,13 +175,14 @@ class Geolocation extends BaseController
     }
 
     /**
-     * Geocode an address, partial address or the name of a location
+     * Geocode an address, partial address or just the name of a place. See: https://www.neutrinoapi.
+     * com/api/geocode-address/
      *
-     * @param string $address       The address or partial address to try and locate
-     * @param string $countryCode   (optional) The ISO 2-letter country code to be biased towards (default is no
+     * @param string $address       The address, partial address or name of a place to try and locate
+     * @param string $countryCode   (optional) The ISO 2-letter country code to be biased towards (the default is no
      *                              country bias)
-     * @param string $languageCode  (optional) The language to display results in, available languages are: de, en, es,
-     *                              fr, it, pt, ru
+     * @param string $languageCode  (optional) The language to display results in, available languages are:<ul><li>de,
+     *                              en, es, fr, it, pt, ru</li></ul>
      * @param bool   $fuzzySearch   (optional) If no matches are found for the given address, start performing a
      *                              recursive fuzzy search until a geolocation is found. We use a combination of
      *                              approximate string matching and data cleansing to find possible location matches
@@ -199,11 +196,8 @@ class Geolocation extends BaseController
         $fuzzySearch = false
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/geocode-address';
+        $_queryBuilder = '/geocode-address';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -212,11 +206,11 @@ class Geolocation extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 

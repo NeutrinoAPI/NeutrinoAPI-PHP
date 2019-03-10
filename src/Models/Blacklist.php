@@ -50,6 +50,13 @@ class Blacklist implements JsonSerializable
     public $txtRecord;
 
     /**
+     * the specific return code for this listing (if listed)
+     * @required
+     * @var string $returnCode public property
+     */
+    public $returnCode;
+
+    /**
      * the DNSBL server response time in milliseconds
      * @required
      * @var integer $responseTime public property
@@ -63,17 +70,19 @@ class Blacklist implements JsonSerializable
      * @param integer $listRating   Initialization value for $this->listRating
      * @param string  $listName     Initialization value for $this->listName
      * @param string  $txtRecord    Initialization value for $this->txtRecord
+     * @param string  $returnCode   Initialization value for $this->returnCode
      * @param integer $responseTime Initialization value for $this->responseTime
      */
     public function __construct()
     {
-        if (6 == func_num_args()) {
+        if (7 == func_num_args()) {
             $this->isListed     = func_get_arg(0);
             $this->listHost     = func_get_arg(1);
             $this->listRating   = func_get_arg(2);
             $this->listName     = func_get_arg(3);
             $this->txtRecord    = func_get_arg(4);
-            $this->responseTime = func_get_arg(5);
+            $this->returnCode   = func_get_arg(5);
+            $this->responseTime = func_get_arg(6);
         }
     }
 
@@ -89,6 +98,7 @@ class Blacklist implements JsonSerializable
         $json['listRating']   = $this->listRating;
         $json['listName']     = $this->listName;
         $json['txtRecord']    = $this->txtRecord;
+        $json['returnCode']   = $this->returnCode;
         $json['responseTime'] = $this->responseTime;
 
         return $json;

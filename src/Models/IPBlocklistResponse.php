@@ -22,35 +22,35 @@ class IPBlocklistResponse implements JsonSerializable
     public $ip;
 
     /**
-     * IP is hosting a malicious bot or is part of a botnet
+     * IP is hosting a malicious bot or is part of a botnet. Includes brute-force crackers
      * @required
      * @var bool $isBot public property
      */
     public $isBot;
 
     /**
-     * IP is hosting an exploit finding bot or exploit scanning software
+     * IP is hosting an exploit finding bot or is running exploit scanning software
      * @required
      * @var bool $isExploitBot public property
      */
     public $isExploitBot;
 
     /**
-     * IP is involved in distributing malware
+     * IP is involved in distributing or is running malware
      * @required
      * @var bool $isMalware public property
      */
     public $isMalware;
 
     /**
-     * IP is a hostile spider or crawler
+     * IP is running a hostile web spider / web crawler
      * @required
      * @var bool $isSpider public property
      */
     public $isSpider;
 
     /**
-     * IP has been flagged on DShield (dshield.org)
+     * IP has been flagged as an attack source on DShield (dshield.org)
      * @required
      * @var bool $isDshield public property
      */
@@ -71,28 +71,28 @@ class IPBlocklistResponse implements JsonSerializable
     public $isProxy;
 
     /**
-     * hijacked netblocks or netblocks controlled by criminal organizations
+     * IP is part of a hijacked netblock or a netblock controlled by a criminal organization
      * @required
      * @var bool $isHijacked public property
      */
     public $isHijacked;
 
     /**
-     * IP is coming from a Tor node
+     * IP is a Tor node or running a Tor related service
      * @required
      * @var bool $isTor public property
      */
     public $isTor;
 
     /**
-     * IP is being used by spyware, malware, botnets or for other malicious activities
+     * IP is involved in distributing or is running spyware
      * @required
      * @var bool $isSpyware public property
      */
     public $isSpyware;
 
     /**
-     * IP address is hosting a spam bot, comment spamming or other spamming software
+     * IP address is hosting a spam bot, comment spamming or any other spamming type software
      * @required
      * @var bool $isSpamBot public property
      */
@@ -106,7 +106,7 @@ class IPBlocklistResponse implements JsonSerializable
     public $isListed;
 
     /**
-     * IP has been detected as coming from a VPN hosting provider
+     * IP has been detected as belonging to a VPN provider
      * @required
      * @var bool $isVpn public property
      */

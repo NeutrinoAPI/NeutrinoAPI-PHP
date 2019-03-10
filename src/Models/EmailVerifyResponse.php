@@ -94,7 +94,12 @@ class EmailVerifyResponse implements JsonSerializable
     public $isPersonal;
 
     /**
-     * The SMTP verification status for the address (see online docs for full details)
+     * The SMTP verification status for the address:<br/><ul><li>ok - SMTP verification was successful,
+     * this is a real address that can receive mail</li><li>invalid - this is not a valid email address
+     * (has either a domain or syntax error)</li><li>absent - this address is not registered with the email
+     * service provider</li><li>unresponsive - the mail server(s) for this address timed-out or refused to
+     * open an SMTP connection</li><li>unknown - sorry, we could not reliably determine the real status of
+     * this address (this address may or may not exist)</li></ul>
      * @required
      * @var string $smtpStatus public property
      */

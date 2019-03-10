@@ -1,7 +1,8 @@
 {
-    "name": "apimatic/neutrinoapi",
+    "name": "neutrinoapi/neutrinoapi_php_sdk",
     "type": "library",
     "description": "The general-purpose API",
+    "version": "3.4.0",
     "keywords": ["NeutrinoAPI","API","SDK"],
     "homepage": "https://apimatic.io",
     "license": "MIT",

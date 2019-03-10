@@ -42,23 +42,22 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
-     * Check the reputation of an IP address or domain against a comprehensive list of blacklists and
-     * blocklists (DNSBLs)
+     * Check the reputation of an IP address, domain name, FQDN or URL against a comprehensive list of
+     * blacklists and blocklists. See: https://www.neutrinoapi.com/api/host-reputation/
      *
-     * @param string $host        An IPv4 address or a domain name. If you supply a domain name it will be checked
-     *                            against the URI DNSBL list
+     * @param string  $host        An IP address, domain name, FQDN or URL.<br/>If you supply a domain/URL it will be
+     *                             checked against the URI DNSBL lists
+     * @param integer $listRating  (optional) Only check lists with this rating or better
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
     public function hostReputation(
-        $host
+        $host,
+        $listRating = 3
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/host-reputation';
+        $_queryBuilder = '/host-reputation';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -67,18 +66,19 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
         //prepare parameters
         $_parameters = array (
             'output-case' => 'camel',
-            'host'        => $host
+            'host'        => $host,
+            'list-rating' => (null != $listRating) ? $listRating : 3
         );
 
         //call on-before Http callback
@@ -107,74 +107,8 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
-     * Parse, analyze and retrieve content from the supplied URL
-     *
-     * @param string $url           The URL to process
-     * @param bool   $fetchContent  If this URL responds with html, text, json or xml then return the response. This
-     *                              option is useful if you want to perform further processing on the URL content
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function uRLInfo(
-        $url,
-        $fetchContent
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/url-info';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case'   => 'camel',
-            'url'           => $url,
-            'fetch-content' => var_export($fetchContent, true)
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\URLInfoResponse');
-    }
-
-    /**
-     * Analyze and extract provider information for an IP address
+     * Analyze and extract provider information for an IP address. See: https://www.neutrinoapi.com/api/ip-
+     * probe/
      *
      * @param string $ip          IPv4 or IPv6 address
      * @return mixed response from the API call
@@ -184,11 +118,8 @@ class SecurityAndNetworking extends BaseController
         $ip
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/ip-probe';
+        $_queryBuilder = '/ip-probe';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -197,11 +128,11 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -237,9 +168,10 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
-     * The IP Blocklist API will detect potentially malicious or dangerous IP addresses
+     * The IP Blocklist API will detect potentially malicious or dangerous IP addresses. See: https://www.
+     * neutrinoapi.com/api/ip-blocklist/
      *
-     * @param string $ip          An IPv4 address
+     * @param string $ip          An IPv4 or IPv6 address
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -247,11 +179,8 @@ class SecurityAndNetworking extends BaseController
         $ip
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/ip-blocklist';
+        $_queryBuilder = '/ip-blocklist';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -260,11 +189,11 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -300,23 +229,20 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
-     * SMTP based email address verification
+     * SMTP based email address verification. See: https://www.neutrinoapi.com/api/email-verify/
      *
-     * @param string $email     An email address
-     * @param bool   $fixTypos  (optional) Automatically attempt to fix typos in the address
+     * @param string $email       An email address
+     * @param bool   $fixTypos    (optional) Automatically attempt to fix typos in the address
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
     public function emailVerify(
         $email,
-        $fixTypos = null
+        $fixTypos = false
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/email-verify';
+        $_queryBuilder = '/email-verify';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -325,18 +251,19 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
         //prepare parameters
         $_parameters = array (
-            'email'     => $email,
-            'fix-typos' => var_export($fixTypos, true)
+            'email'       => $email,
+            'output-case' => 'camel',
+            'fix-typos'   => (null != $fixTypos) ? var_export($fixTypos, true) : false
         );
 
         //call on-before Http callback

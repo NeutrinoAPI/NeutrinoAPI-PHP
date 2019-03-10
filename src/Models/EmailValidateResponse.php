@@ -50,7 +50,7 @@ class EmailValidateResponse implements JsonSerializable
     public $isFreemail;
 
     /**
-     * The full email address (this could be different to the supplied address if fix-typos is used)
+     * The full email address (this could be different to the supplied address if typos-fixed is true)
      * @required
      * @var string $email public property
      */

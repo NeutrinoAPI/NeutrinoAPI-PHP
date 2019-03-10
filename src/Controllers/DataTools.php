@@ -42,9 +42,9 @@ class DataTools extends BaseController
     }
 
     /**
-     * Parse, validate and clean an email address
+     * Parse, validate and clean an email address. See: https://www.neutrinoapi.com/api/email-validate/
      *
-     * @param string $email       The email address
+     * @param string $email       An email address
      * @param bool   $fixTypos    (optional) Automatically attempt to fix typos in the address
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
@@ -54,11 +54,8 @@ class DataTools extends BaseController
         $fixTypos = false
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/email-validate';
+        $_queryBuilder = '/email-validate';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -67,11 +64,11 @@ class DataTools extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -108,10 +105,11 @@ class DataTools extends BaseController
     }
 
     /**
-     * Detect bad words, swear words and profanity in a given text
+     * Detect bad words, swear words and profanity in a given text. See: https://www.neutrinoapi.
+     * com/api/bad-word-filter/
      *
-     * @param string $content          The text content to check. This can be either a URL to load content from or an
-     *                                 actual content string
+     * @param string $content          The content to scan. This can be either a URL to load content from or an actual
+     *                                 content string
      * @param string $censorCharacter  (optional) The character to use to censor out the bad words found
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
@@ -121,11 +119,8 @@ class DataTools extends BaseController
         $censorCharacter = null
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/bad-word-filter';
+        $_queryBuilder = '/bad-word-filter';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -134,11 +129,11 @@ class DataTools extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'     => 'APIMATIC 2.0',
+            'user-agent'     => BaseController::USER_AGENT,
             'Accept'         => 'application/json'
         );
 
@@ -175,11 +170,11 @@ class DataTools extends BaseController
     }
 
     /**
-     * A powerful unit and currency conversion tool
+     * A powerful unit conversion tool. See: https://www.neutrinoapi.com/api/convert/
      *
-     * @param string $fromValue   The value to convert from
-     * @param string $fromType    The type of the value to convert from
-     * @param string $toType      The type to convert to
+     * @param string $fromValue   The value to convert from (e.g. 10.95)
+     * @param string $fromType    The type of the value to convert from (e.g. USD)
+     * @param string $toType      The type to convert to (e.g. EUR)
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -189,11 +184,8 @@ class DataTools extends BaseController
         $toType
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/convert';
+        $_queryBuilder = '/convert';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -202,11 +194,11 @@ class DataTools extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -244,12 +236,14 @@ class DataTools extends BaseController
     }
 
     /**
-     * Parse, validate and get location information about a phone number
+     * Parse, validate and get location information about a phone number. See: https://www.neutrinoapi.
+     * com/api/phone-validate/
      *
-     * @param string $number       The phone number
-     * @param string $countryCode  (optional) ISO 2-letter country code, assume numbers are based in this country. If
-     *                             not set numbers are assumed to be in international format (with or without the
-     *                             leading + sign)
+     * @param string $number       A phone number. This can be in international format (E.164) or local format. If
+     *                             passing local format you should use the 'country-code' or 'ip' options as well
+     * @param string $countryCode  (optional) ISO 2-letter country code, assume numbers are based in this country.
+     *                             <br/>If not set numbers are assumed to be in international format (with or without
+     *                             the leading + sign)
      * @param string $ip           (optional) Pass in a users IP address and we will assume numbers are based in the
      *                             country of the IP address
      * @return mixed response from the API call
@@ -261,11 +255,8 @@ class DataTools extends BaseController
         $ip = null
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/phone-validate';
+        $_queryBuilder = '/phone-validate';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -274,11 +265,11 @@ class DataTools extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -316,9 +307,10 @@ class DataTools extends BaseController
     }
 
     /**
-     * Parse, validate and get detailed user-agent information from a user agent string
+     * Parse, validate and get detailed user-agent information from a user agent string. See: https://www.
+     * neutrinoapi.com/api/user-agent-info/
      *
-     * @param string $userAgent   A user-agent string
+     * @param string $userAgent   A user agent string
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -326,11 +318,8 @@ class DataTools extends BaseController
         $userAgent
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/user-agent-info';
+        $_queryBuilder = '/user-agent-info';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -339,11 +328,11 @@ class DataTools extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 
@@ -376,144 +365,5 @@ class DataTools extends BaseController
         $mapper = $this->getJsonMapper();
 
         return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\UserAgentInfoResponse');
-    }
-
-    /**
-     * Clean and sanitize untrusted HTML
-     *
-     * @param string $content     The HTML content. This can be either a URL to load HTML from or an actual HTML
-     *                            content string
-     * @param string $outputType  The level of sanitization, possible values are: plain-text, simple-text, basic-html,
-     *                            basic-html-with-images, advanced-html
-     * @return string response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function hTMLClean(
-        $content,
-        $outputType
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/html-clean';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'content'     => $content,
-            'output-type' => $outputType
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        return $response->body;
-    }
-
-    /**
-     * Extract specific HTML tag contents or attributes from complex HTML or XHTML content
-     *
-     * @param string $content     The HTML content. This can be either a URL to load HTML from or an actual HTML
-     *                            content string
-     * @param string $tag         The HTML tag(s) to extract data from. This can just be a simple tag name like 'img'
-     *                            OR a CSS/jQuery style selector
-     * @param string $attribute   (optional) If set, then extract data from the specified tag attribute. If not set,
-     *                            then data will be extracted from the tags inner content
-     * @param string $baseUrl     (optional) The base URL to replace into realive links
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function hTMLExtract(
-        $content,
-        $tag,
-        $attribute = null,
-        $baseUrl = null
-    ) {
-
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
-        //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/html-extract-tags';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case' => 'camel',
-            'content'     => $content,
-            'tag'         => $tag,
-            'attribute'   => $attribute,
-            'base-url'    => $baseUrl
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\HTMLExtractResponse');
     }
 }

@@ -29,7 +29,15 @@ class IPProbeResponse implements JsonSerializable
     public $country;
 
     /**
-     * The detected provider type. See online API docs for specific provider type details
+     * The detected provider type, possible values are:<br/><ul><li>isp - IP belongs to an internet service
+     * provider. This includes both mobile, home and business internet providers</li><li>hosting - IP
+     * belongs to a hosting company. This includes website hosting, cloud computing platforms and
+     * colocation facilities</li><li>vpn - IP belongs to a VPN provider</li><li>proxy - IP belongs to a
+     * proxy service. This includes HTTP/SOCKS proxies and browser based proxies</li><li>university - IP
+     * belongs to a university/college/campus</li><li>government - IP belongs to a government department.
+     * This includes military facilities</li><li>commercial - IP belongs to a commercial entity such as a
+     * corporate headquarters or company office</li><li>unknown - could not identify the provider
+     * type</li></ul>
      * @required
      * @var string $providerType public property
      */
@@ -85,7 +93,7 @@ class IPProbeResponse implements JsonSerializable
     public $region;
 
     /**
-     * A description of the provider, usually extracted from the providers website or WHOIS record
+     * A description of the provider (usually extracted from the providers website)
      * @required
      * @var string $providerDescription public property
      */
@@ -107,33 +115,121 @@ class IPProbeResponse implements JsonSerializable
     public $isHosting;
 
     /**
-     * True if this IP belongs to an ISP. Note that this can still be true even if the provider type is
-     * VPN/proxy, this occurs in the case that the IP is detected as both types
+     * True if this IP belongs to an internet service provider. Note that this can still be true even if
+     * the provider type is VPN/proxy, this occurs in the case that the IP is detected as both types
      * @required
      * @var bool $isIsp public property
      */
     public $isIsp;
 
     /**
+     * ISO 3-letter country code
+     * @required
+     * @var string $countryCode3 public property
+     */
+    public $countryCode3;
+
+    /**
+     * ISO 4217 currency code associated with the country
+     * @required
+     * @var string $currencyCode public property
+     */
+    public $currencyCode;
+
+    /**
+     * True if this IP ia a VPN
+     * @required
+     * @var bool $isVpn public property
+     */
+    public $isVpn;
+
+    /**
+     * True if this IP ia a proxy
+     * @required
+     * @var bool $isProxy public property
+     */
+    public $isProxy;
+
+    /**
+     * The autonomous system (AS) number
+     * @required
+     * @var string $asn public property
+     */
+    public $asn;
+
+    /**
+     * The autonomous system (AS) CIDR range
+     * @required
+     * @var string $asCidr public property
+     */
+    public $asCidr;
+
+    /**
+     * The autonomous system (AS) ISO 2-letter country code
+     * @required
+     * @var string $asCountryCode public property
+     */
+    public $asCountryCode;
+
+    /**
+     * The autonomous system (AS) ISO 3-letter country code
+     * @required
+     * @var string $asCountryCode3 public property
+     */
+    public $asCountryCode3;
+
+    /**
+     * Array of all the domains associated with the autonomous system (AS)
+     * @required
+     * @var array $asDomains public property
+     */
+    public $asDomains;
+
+    /**
+     * The autonomous system (AS) description / company name
+     * @required
+     * @var string $asDescription public property
+     */
+    public $asDescription;
+
+    /**
+     * The age of the autonomous system (AS) in number of years since registration
+     * @required
+     * @var integer $asAge public property
+     */
+    public $asAge;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param bool   $valid               Initialization value for $this->valid
-     * @param string $country             Initialization value for $this->country
-     * @param string $providerType        Initialization value for $this->providerType
-     * @param string $countryCode         Initialization value for $this->countryCode
-     * @param string $hostname            Initialization value for $this->hostname
-     * @param string $providerDomain      Initialization value for $this->providerDomain
-     * @param string $city                Initialization value for $this->city
-     * @param string $providerWebsite     Initialization value for $this->providerWebsite
-     * @param string $ip                  Initialization value for $this->ip
-     * @param string $region              Initialization value for $this->region
-     * @param string $providerDescription Initialization value for $this->providerDescription
-     * @param string $continentCode       Initialization value for $this->continentCode
-     * @param bool   $isHosting           Initialization value for $this->isHosting
-     * @param bool   $isIsp               Initialization value for $this->isIsp
+     * @param bool    $valid               Initialization value for $this->valid
+     * @param string  $country             Initialization value for $this->country
+     * @param string  $providerType        Initialization value for $this->providerType
+     * @param string  $countryCode         Initialization value for $this->countryCode
+     * @param string  $hostname            Initialization value for $this->hostname
+     * @param string  $providerDomain      Initialization value for $this->providerDomain
+     * @param string  $city                Initialization value for $this->city
+     * @param string  $providerWebsite     Initialization value for $this->providerWebsite
+     * @param string  $ip                  Initialization value for $this->ip
+     * @param string  $region              Initialization value for $this->region
+     * @param string  $providerDescription Initialization value for $this->providerDescription
+     * @param string  $continentCode       Initialization value for $this->continentCode
+     * @param bool    $isHosting           Initialization value for $this->isHosting
+     * @param bool    $isIsp               Initialization value for $this->isIsp
+     * @param string  $countryCode3        Initialization value for $this->countryCode3
+     * @param string  $currencyCode        Initialization value for $this->currencyCode
+     * @param bool    $isVpn               Initialization value for $this->isVpn
+     * @param bool    $isProxy             Initialization value for $this->isProxy
+     * @param string  $asn                 Initialization value for $this->asn
+     * @param string  $asCidr              Initialization value for $this->asCidr
+     * @param string  $asCountryCode       Initialization value for $this->asCountryCode
+     * @param string  $asCountryCode3      Initialization value for $this->asCountryCode3
+     * @param array   $asDomains           Initialization value for $this->asDomains
+     * @param string  $asDescription       Initialization value for $this->asDescription
+     * @param integer $asAge               Initialization value for $this->asAge
      */
     public function __construct()
     {
-        if (14 == func_num_args()) {
+        if (25 == func_num_args()) {
             $this->valid               = func_get_arg(0);
             $this->country             = func_get_arg(1);
             $this->providerType        = func_get_arg(2);
@@ -148,6 +244,17 @@ class IPProbeResponse implements JsonSerializable
             $this->continentCode       = func_get_arg(11);
             $this->isHosting           = func_get_arg(12);
             $this->isIsp               = func_get_arg(13);
+            $this->countryCode3        = func_get_arg(14);
+            $this->currencyCode        = func_get_arg(15);
+            $this->isVpn               = func_get_arg(16);
+            $this->isProxy             = func_get_arg(17);
+            $this->asn                 = func_get_arg(18);
+            $this->asCidr              = func_get_arg(19);
+            $this->asCountryCode       = func_get_arg(20);
+            $this->asCountryCode3      = func_get_arg(21);
+            $this->asDomains           = func_get_arg(22);
+            $this->asDescription       = func_get_arg(23);
+            $this->asAge               = func_get_arg(24);
         }
     }
 
@@ -172,6 +279,17 @@ class IPProbeResponse implements JsonSerializable
         $json['continentCode']       = $this->continentCode;
         $json['isHosting']           = $this->isHosting;
         $json['isIsp']               = $this->isIsp;
+        $json['countryCode3']        = $this->countryCode3;
+        $json['currencyCode']        = $this->currencyCode;
+        $json['isVpn']               = $this->isVpn;
+        $json['isProxy']             = $this->isProxy;
+        $json['asn']                 = $this->asn;
+        $json['asCidr']              = $this->asCidr;
+        $json['asCountryCode']       = $this->asCountryCode;
+        $json['asCountryCode3']      = $this->asCountryCode3;
+        $json['asDomains']           = $this->asDomains;
+        $json['asDescription']       = $this->asDescription;
+        $json['asAge']               = $this->asAge;
 
         return $json;
     }

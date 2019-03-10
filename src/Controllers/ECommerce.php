@@ -46,9 +46,8 @@ class ECommerce extends BaseController
      * //www.neutrinoapi.com/api/bin-lookup/
      *
      * @param string $binNumber   The BIN or IIN number (the first 6 digits of a credit card number)
-     * @param string $customerIp  (optional) Pass in a customers remote IP address. The API will then determine the
-     *                            country of the IP address and match it against the BIN country. This feature is
-     *                            designed for fraud prevention and detection checks.
+     * @param string $customerIp  (optional) Pass in the customers IP address and we will return some extra information
+     *                            about them
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -57,11 +56,8 @@ class ECommerce extends BaseController
         $customerIp = null
     ) {
 
-        //the base uri for api requests
-        $_queryBuilder = Configuration::$BASEURI;
-        
         //prepare query string for API call
-        $_queryBuilder = $_queryBuilder.'/bin-lookup';
+        $_queryBuilder = '/bin-lookup';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -70,11 +66,11 @@ class ECommerce extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl($_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => 'APIMATIC 2.0',
+            'user-agent'    => BaseController::USER_AGENT,
             'Accept'        => 'application/json'
         );
 

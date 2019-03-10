@@ -21,6 +21,12 @@ use Unirest\Request;
 class BaseController
 {
     /**
+     * User-agent to be sent with API calls
+     * @var string
+     */
+    const USER_AGENT = 'APIMATIC 2.0';
+
+    /**
      * HttpCallBack instance associated with this controller
      * @var HttpCallBack
      */
@@ -29,8 +35,9 @@ class BaseController
      /**
      * Constructor that sets the timeout of requests
      */
-    function __construct(){
-        Request::timeout(30);
+    protected function __construct()
+    {
+        Request::timeout(45);
     }
 
     /**
@@ -64,17 +71,17 @@ class BaseController
     protected function validateResponse(HttpResponse $response, HttpContext $_httpContext)
     {
         if ($response->getStatusCode() == 400) {
-            throw new Exceptions\APIErrorException('Your API request has been rejected. Check the error code for details', $_httpContext);
+            throw new Exceptions\APIErrorException(
+                'Your API request has been rejected. Check the error code for details',
+                $_httpContext
+            );
         }
-
         if ($response->getStatusCode() == 403) {
             throw new APIException('You have failed to authenticate or are using an invalid API path', $_httpContext);
         }
-
         if ($response->getStatusCode() == 500) {
             throw new APIException('We messed up, sorry! Your request has caused a fatal exception', $_httpContext);
         }
-
         if (($response->getStatusCode() < 200) || ($response->getStatusCode() > 208)) { //[200,208] = HTTP OK
             throw new APIException('HTTP Response Not OK', $_httpContext);
         }

@@ -43,6 +43,13 @@ class Location implements JsonSerializable
     public $countryCode;
 
     /**
+     * The ISO 3-letter country code of the location
+     * @required
+     * @var string $countryCode3 public property
+     */
+    public $countryCode3;
+
+    /**
      * The location latitude
      * @required
      * @var double $latitude public property
@@ -84,6 +91,7 @@ class Location implements JsonSerializable
      * @param string $address           Initialization value for $this->address
      * @param string $city              Initialization value for $this->city
      * @param string $countryCode       Initialization value for $this->countryCode
+     * @param string $countryCode3      Initialization value for $this->countryCode3
      * @param double $latitude          Initialization value for $this->latitude
      * @param string $postalCode        Initialization value for $this->postalCode
      * @param double $longitude         Initialization value for $this->longitude
@@ -92,16 +100,17 @@ class Location implements JsonSerializable
      */
     public function __construct()
     {
-        if (9 == func_num_args()) {
+        if (10 == func_num_args()) {
             $this->country           = func_get_arg(0);
             $this->address           = func_get_arg(1);
             $this->city              = func_get_arg(2);
             $this->countryCode       = func_get_arg(3);
-            $this->latitude          = func_get_arg(4);
-            $this->postalCode        = func_get_arg(5);
-            $this->longitude         = func_get_arg(6);
-            $this->state             = func_get_arg(7);
-            $this->addressComponents = func_get_arg(8);
+            $this->countryCode3      = func_get_arg(4);
+            $this->latitude          = func_get_arg(5);
+            $this->postalCode        = func_get_arg(6);
+            $this->longitude         = func_get_arg(7);
+            $this->state             = func_get_arg(8);
+            $this->addressComponents = func_get_arg(9);
         }
     }
 
@@ -116,6 +125,7 @@ class Location implements JsonSerializable
         $json['address']           = $this->address;
         $json['city']              = $this->city;
         $json['countryCode']       = $this->countryCode;
+        $json['countryCode3']      = $this->countryCode3;
         $json['latitude']          = $this->latitude;
         $json['postalCode']        = $this->postalCode;
         $json['longitude']         = $this->longitude;

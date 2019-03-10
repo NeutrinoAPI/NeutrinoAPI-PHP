@@ -72,4 +72,12 @@ class NeutrinoAPIClient
     {
         return Controllers\ECommerce::getInstance();
     }
+    /**
+     * Singleton access to WWW controller
+     * @return Controllers\WWW The *Singleton* instance
+     */
+    public function getWWW()
+    {
+        return Controllers\WWW::getInstance();
+    }
 }
