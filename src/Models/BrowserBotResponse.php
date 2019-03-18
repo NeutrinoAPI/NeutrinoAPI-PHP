@@ -109,7 +109,7 @@ class BrowserBotResponse implements JsonSerializable
     /**
      * The number of seconds taken to load the page (from initial request until DOM ready)
      * @required
-     * @var integer $loadTime public property
+     * @var double $loadTime public property
      */
     public $loadTime;
 
@@ -164,7 +164,7 @@ class BrowserBotResponse implements JsonSerializable
      * @param bool    $isHttpRedirect    Initialization value for $this->isHttpRedirect
      * @param string  $httpRedirectUrl   Initialization value for $this->httpRedirectUrl
      * @param string  $serverIp          Initialization value for $this->serverIp
-     * @param integer $loadTime          Initialization value for $this->loadTime
+     * @param double  $loadTime          Initialization value for $this->loadTime
      * @param array   $responseHeaders   Initialization value for $this->responseHeaders
      * @param bool    $isSecure          Initialization value for $this->isSecure
      * @param array   $securityDetails   Initialization value for $this->securityDetails

@@ -2,16 +2,15 @@
     "name": "neutrinoapi/neutrinoapi_php_sdk",
     "type": "library",
     "description": "The general-purpose API",
-    "version": "3.4.0",
+    "version": "3.4.1",
     "keywords": ["NeutrinoAPI","API","SDK"],
-    "homepage": "https://apimatic.io",
+    "homepage": "https://www.neutrinoapi.com/contact-us/",
     "license": "MIT",
     "authors": [
         {
-            "name": "APIMatic SDK Generator",
-            "email": "support@apimatic.io",
-            "homepage": "https://apimatic.io",
-            "role": "API Tool"
+            "name": "NeutrinoAPI",
+            "email": "tech@neutrinoapi.com",
+            "homepage": "https://www.neutrinoapi.com/contact-us/"
         }
     ],
     "require": {

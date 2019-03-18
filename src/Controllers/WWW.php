@@ -42,72 +42,6 @@ class WWW extends BaseController
     }
 
     /**
-     * Parse, analyze and retrieve content from the supplied URL. See: https://www.neutrinoapi.com/api/url-
-     * info/
-     *
-     * @param string $url           The URL to probe
-     * @param bool   $fetchContent  (optional) If this URL responds with html, text, json or xml then return the
-     *                              response. This option is useful if you want to perform further processing on the
-     *                              URL content (e.g. with the HTML Extract or HTML Clean APIs)
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function uRLInfo(
-        $url,
-        $fetchContent = false
-    ) {
-
-        //prepare query string for API call
-        $_queryBuilder = '/url-info';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => BaseController::USER_AGENT,
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case'   => 'camel',
-            'url'           => $url,
-            'fetch-content' => (null != $fetchContent) ? var_export($fetchContent, true) : false
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\URLInfoResponse');
-    }
-
-    /**
      * Browser bot can extract content, interact with keyboard and mouse events, and execute JavaScript on
      * a website. See: https://www.neutrinoapi.com/api/browser-bot/
      *
@@ -272,5 +206,71 @@ class WWW extends BaseController
         $this->validateResponse($_httpResponse, $_httpContext);
 
         return $response->body;
+    }
+
+    /**
+     * Parse, analyze and retrieve content from the supplied URL. See: https://www.neutrinoapi.com/api/url-
+     * info/
+     *
+     * @param string $url           The URL to probe
+     * @param bool   $fetchContent  (optional) If this URL responds with html, text, json or xml then return the
+     *                              response. This option is useful if you want to perform further processing on the
+     *                              URL content (e.g. with the HTML Extract or HTML Clean APIs)
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function uRLInfo(
+        $url,
+        $fetchContent = false
+    ) {
+
+        //prepare query string for API call
+        $_queryBuilder = '/url-info';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => BaseController::USER_AGENT,
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case'   => 'camel',
+            'url'           => $url,
+            'fetch-content' => (null != $fetchContent) ? var_export($fetchContent, true) : false
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\URLInfoResponse');
     }
 }

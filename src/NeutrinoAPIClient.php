@@ -25,6 +25,14 @@ class NeutrinoAPIClient
         Configuration::$apiKey = $apiKey ? $apiKey : Configuration::$apiKey;
     }
     /**
+     * Singleton access to WWW controller
+     * @return Controllers\WWW The *Singleton* instance
+     */
+    public function getWWW()
+    {
+        return Controllers\WWW::getInstance();
+    }
+    /**
      * Singleton access to Imaging controller
      * @return Controllers\Imaging The *Singleton* instance
      */
@@ -41,20 +49,12 @@ class NeutrinoAPIClient
         return Controllers\Telephony::getInstance();
     }
     /**
-     * Singleton access to DataTools controller
-     * @return Controllers\DataTools The *Singleton* instance
+     * Singleton access to ECommerce controller
+     * @return Controllers\ECommerce The *Singleton* instance
      */
-    public function getDataTools()
+    public function getECommerce()
     {
-        return Controllers\DataTools::getInstance();
-    }
-    /**
-     * Singleton access to SecurityAndNetworking controller
-     * @return Controllers\SecurityAndNetworking The *Singleton* instance
-     */
-    public function getSecurityAndNetworking()
-    {
-        return Controllers\SecurityAndNetworking::getInstance();
+        return Controllers\ECommerce::getInstance();
     }
     /**
      * Singleton access to Geolocation controller
@@ -65,19 +65,19 @@ class NeutrinoAPIClient
         return Controllers\Geolocation::getInstance();
     }
     /**
-     * Singleton access to ECommerce controller
-     * @return Controllers\ECommerce The *Singleton* instance
+     * Singleton access to SecurityAndNetworking controller
+     * @return Controllers\SecurityAndNetworking The *Singleton* instance
      */
-    public function getECommerce()
+    public function getSecurityAndNetworking()
     {
-        return Controllers\ECommerce::getInstance();
+        return Controllers\SecurityAndNetworking::getInstance();
     }
     /**
-     * Singleton access to WWW controller
-     * @return Controllers\WWW The *Singleton* instance
+     * Singleton access to DataTools controller
+     * @return Controllers\DataTools The *Singleton* instance
      */
-    public function getWWW()
+    public function getDataTools()
     {
-        return Controllers\WWW::getInstance();
+        return Controllers\DataTools::getInstance();
     }
 }

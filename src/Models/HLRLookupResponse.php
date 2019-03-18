@@ -29,7 +29,7 @@ class HLRLookupResponse implements JsonSerializable
     public $internationalCallingCode;
 
     /**
-     * The mobile MNC number
+     * The mobile MNC number (Mobile Network Code)
      * @required
      * @var string $mnc public property
      */
@@ -72,14 +72,14 @@ class HLRLookupResponse implements JsonSerializable
     public $portedNetwork;
 
     /**
-     * The mobile IMSI number
+     * The mobile IMSI number (International Mobile Subscriber Identity)
      * @required
      * @var string $imsi public property
      */
     public $imsi;
 
     /**
-     * The mobile MCC number
+     * The mobile MCC number (Mobile Country Code)
      * @required
      * @var string $mcc public property
      */
@@ -114,7 +114,7 @@ class HLRLookupResponse implements JsonSerializable
     public $isPorted;
 
     /**
-     * The mobile MSIN number
+     * The mobile MSIN number (Mobile Subscription Identification Number)
      * @required
      * @var string $msin public property
      */
@@ -178,6 +178,13 @@ class HLRLookupResponse implements JsonSerializable
     public $roamingCountryCode;
 
     /**
+     * The mobile MSC number (Mobile Switching Center)
+     * @required
+     * @var string $msc public property
+     */
+    public $msc;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param bool    $numberValid              Initialization value for $this->numberValid
      * @param integer $internationalCallingCode Initialization value for $this->internationalCallingCode
@@ -201,10 +208,11 @@ class HLRLookupResponse implements JsonSerializable
      * @param string  $countryCode3             Initialization value for $this->countryCode3
      * @param string  $currencyCode             Initialization value for $this->currencyCode
      * @param string  $roamingCountryCode       Initialization value for $this->roamingCountryCode
+     * @param string  $msc                      Initialization value for $this->msc
      */
     public function __construct()
     {
-        if (22 == func_num_args()) {
+        if (23 == func_num_args()) {
             $this->numberValid              = func_get_arg(0);
             $this->internationalCallingCode = func_get_arg(1);
             $this->mnc                      = func_get_arg(2);
@@ -227,6 +235,7 @@ class HLRLookupResponse implements JsonSerializable
             $this->countryCode3             = func_get_arg(19);
             $this->currencyCode             = func_get_arg(20);
             $this->roamingCountryCode       = func_get_arg(21);
+            $this->msc                      = func_get_arg(22);
         }
     }
 
@@ -259,6 +268,7 @@ class HLRLookupResponse implements JsonSerializable
         $json['countryCode3']             = $this->countryCode3;
         $json['currencyCode']             = $this->currencyCode;
         $json['roamingCountryCode']       = $this->roamingCountryCode;
+        $json['msc']                      = $this->msc;
 
         return $json;
     }

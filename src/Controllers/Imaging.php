@@ -42,140 +42,6 @@ class Imaging extends BaseController
     }
 
     /**
-     * Resize an image and output as either JPEG or PNG. See: https://www.neutrinoapi.com/api/image-
-     * resize/
-     *
-     * @param string  $imageUrl  The URL to the source image
-     * @param integer $width     The width to resize to (in px) while preserving aspect ratio
-     * @param integer $height    The height to resize to (in px) while preserving aspect ratio
-     * @param string  $format    (optional) The output image format, can be either png or jpg
-     * @return string response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function imageResize(
-        $imageUrl,
-        $width,
-        $height,
-        $format = 'png'
-    ) {
-
-        //prepare query string for API call
-        $_queryBuilder = '/image-resize';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => BaseController::USER_AGENT
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'image-url' => $imageUrl,
-            'width'     => $width,
-            'height'    => $height,
-            'format'    => (null != $format) ? $format : 'png'
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        return $response->body;
-    }
-
-    /**
-     * Generate a QR code as a PNG image. See: https://www.neutrinoapi.com/api/qr-code/
-     *
-     * @param string  $content  The content to encode into the QR code (e.g. a URL or a phone number)
-     * @param integer $width    (optional) The width of the QR code (in px)
-     * @param integer $height   (optional) The height of the QR code (in px)
-     * @param string  $fgColor  (optional) The QR code foreground color
-     * @param string  $bgColor  (optional) The QR code background color
-     * @return string response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function qRCode(
-        $content,
-        $width = 256,
-        $height = 256,
-        $fgColor = '#000000',
-        $bgColor = '#ffffff'
-    ) {
-
-        //prepare query string for API call
-        $_queryBuilder = '/qr-code';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'width'    => (null != $width) ? $width : 256,
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => BaseController::USER_AGENT
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'content'  => $content,
-            'height'   => (null != $height) ? $height : 256,
-            'fg-color' => (null != $fgColor) ? $fgColor : '#000000',
-            'bg-color' => (null != $bgColor) ? $bgColor : '#ffffff'
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        return $response->body;
-    }
-
-    /**
      * Watermark one image with another image. See: https://www.neutrinoapi.com/api/image-watermark/
      *
      * @param string  $imageUrl      The URL to the source image
@@ -253,6 +119,140 @@ class Imaging extends BaseController
     }
 
     /**
+     * Generate a QR code as a PNG image. See: https://www.neutrinoapi.com/api/qr-code/
+     *
+     * @param string  $content  The content to encode into the QR code (e.g. a URL or a phone number)
+     * @param integer $width    (optional) The width of the QR code (in px)
+     * @param integer $height   (optional) The height of the QR code (in px)
+     * @param string  $fgColor  (optional) The QR code foreground color
+     * @param string  $bgColor  (optional) The QR code background color
+     * @return string response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function qRCode(
+        $content,
+        $width = 256,
+        $height = 256,
+        $fgColor = '#000000',
+        $bgColor = '#ffffff'
+    ) {
+
+        //prepare query string for API call
+        $_queryBuilder = '/qr-code';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => BaseController::USER_AGENT
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'content'  => $content,
+            'width'    => (null != $width) ? $width : 256,
+            'height'   => (null != $height) ? $height : 256,
+            'fg-color' => (null != $fgColor) ? $fgColor : '#000000',
+            'bg-color' => (null != $bgColor) ? $bgColor : '#ffffff'
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        return $response->body;
+    }
+
+    /**
+     * Resize an image and output as either JPEG or PNG. See: https://www.neutrinoapi.com/api/image-
+     * resize/
+     *
+     * @param string  $imageUrl  The URL to the source image
+     * @param integer $width     The width to resize to (in px) while preserving aspect ratio
+     * @param integer $height    The height to resize to (in px) while preserving aspect ratio
+     * @param string  $format    (optional) The output image format, can be either png or jpg
+     * @return string response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function imageResize(
+        $imageUrl,
+        $width,
+        $height,
+        $format = 'png'
+    ) {
+
+        //prepare query string for API call
+        $_queryBuilder = '/image-resize';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => BaseController::USER_AGENT
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'image-url' => $imageUrl,
+            'width'     => $width,
+            'height'    => $height,
+            'format'    => (null != $format) ? $format : 'png'
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        return $response->body;
+    }
+
+    /**
      * Render HTML content to PDF, JPG or PNG. See: https://www.neutrinoapi.com/api/html5-render/
      *
      * @param string  $content            The HTML content. This can be either a URL to load HTML from or an actual
@@ -267,7 +267,7 @@ class Imaging extends BaseController
      * @param integer $marginTop          (optional) The document top margin (in mm)
      * @param integer $marginBottom       (optional) The document bottom margin (in mm)
      * @param bool    $landscape          (optional) Set the document to lanscape orientation
-     * @param integer $zoom               (optional) Set the zoom factor when rendering the page (2.0 for double size,
+     * @param double  $zoom               (optional) Set the zoom factor when rendering the page (2.0 for double size,
      *                                    0.5 for half size)
      * @param bool    $grayscale          (optional) Render the final document in grayscale
      * @param bool    $mediaPrint         (optional) Use @media print CSS styles to render the document
@@ -317,7 +317,7 @@ class Imaging extends BaseController
         $marginTop = 0,
         $marginBottom = 0,
         $landscape = false,
-        $zoom = 1.0,
+        $zoom = 1,
         $grayscale = false,
         $mediaPrint = false,
         $mediaQueries = false,
@@ -374,7 +374,7 @@ class Imaging extends BaseController
             'margin-top'         => (null != $marginTop) ? $marginTop : 0,
             'margin-bottom'      => (null != $marginBottom) ? $marginBottom : 0,
             'landscape'          => (null != $landscape) ? var_export($landscape, true) : false,
-            'zoom'               => (null != $zoom) ? $zoom : 1.0,
+            'zoom'               => (null != $zoom) ? $zoom : 1,
             'grayscale'          => (null != $grayscale) ? var_export($grayscale, true) : false,
             'media-print'        => (null != $mediaPrint) ? var_export($mediaPrint, true) : false,
             'media-queries'      => (null != $mediaQueries) ? var_export($mediaQueries, true) : false,

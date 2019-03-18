@@ -52,7 +52,7 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location latitude
      * @required
-     * @var integer $latitude public property
+     * @var double $latitude public property
      */
     public $latitude;
 
@@ -66,7 +66,7 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location longitude
      * @required
-     * @var integer $longitude public property
+     * @var double $longitude public property
      */
     public $longitude;
 
@@ -100,18 +100,18 @@ class IPInfoResponse implements JsonSerializable
 
     /**
      * Constructor to set initial or default values of member properties
-     * @param bool    $valid         Initialization value for $this->valid
-     * @param string  $country       Initialization value for $this->country
-     * @param string  $hostname      Initialization value for $this->hostname
-     * @param string  $city          Initialization value for $this->city
-     * @param string  $countryCode   Initialization value for $this->countryCode
-     * @param integer $latitude      Initialization value for $this->latitude
-     * @param string  $region        Initialization value for $this->region
-     * @param integer $longitude     Initialization value for $this->longitude
-     * @param string  $continentCode Initialization value for $this->continentCode
-     * @param string  $ip            Initialization value for $this->ip
-     * @param string  $countryCode3  Initialization value for $this->countryCode3
-     * @param string  $currencyCode  Initialization value for $this->currencyCode
+     * @param bool   $valid         Initialization value for $this->valid
+     * @param string $country       Initialization value for $this->country
+     * @param string $hostname      Initialization value for $this->hostname
+     * @param string $city          Initialization value for $this->city
+     * @param string $countryCode   Initialization value for $this->countryCode
+     * @param double $latitude      Initialization value for $this->latitude
+     * @param string $region        Initialization value for $this->region
+     * @param double $longitude     Initialization value for $this->longitude
+     * @param string $continentCode Initialization value for $this->continentCode
+     * @param string $ip            Initialization value for $this->ip
+     * @param string $countryCode3  Initialization value for $this->countryCode3
+     * @param string $currencyCode  Initialization value for $this->currencyCode
      */
     public function __construct()
     {
