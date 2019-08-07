@@ -42,33 +42,25 @@ class Imaging extends BaseController
     }
 
     /**
-     * Watermark one image with another image. See: https://www.neutrinoapi.com/api/image-watermark/
+     * Resize an image and output as either JPEG or PNG. See: https://www.neutrinoapi.com/api/image-
+     * resize/
      *
-     * @param string  $imageUrl      The URL to the source image
-     * @param string  $watermarkUrl  The URL to the watermark image
-     * @param integer $opacity       (optional) The opacity of the watermark (0 to 100)
-     * @param string  $format        (optional) The output image format, can be either png or jpg
-     * @param string  $position      (optional) The position of the watermark image, possible values are:<br/>center,
-     *                               top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
-     * @param integer $width         (optional) If set resize the resulting image to this width (in px) while
-     *                               preserving aspect ratio
-     * @param integer $height        (optional) If set resize the resulting image to this height (in px) while
-     *                               preserving aspect ratio
+     * @param string  $imageUrl  The URL to the source image
+     * @param integer $width     The width to resize to (in px) while preserving aspect ratio
+     * @param integer $height    The height to resize to (in px) while preserving aspect ratio
+     * @param string  $format    (optional) The output image format, can be either png or jpg
      * @return string response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function imageWatermark(
+    public function imageResize(
         $imageUrl,
-        $watermarkUrl,
-        $opacity = 50,
-        $format = 'png',
-        $position = 'center',
-        $width = null,
-        $height = null
+        $width,
+        $height,
+        $format = 'png'
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/image-watermark';
+        $_queryBuilder = '/image-resize';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -86,13 +78,10 @@ class Imaging extends BaseController
 
         //prepare parameters
         $_parameters = array (
-            'image-url'     => $imageUrl,
-            'watermark-url' => $watermarkUrl,
-            'opacity'       => (null != $opacity) ? $opacity : 50,
-            'format'        => (null != $format) ? $format : 'png',
-            'position'      => (null != $position) ? $position : 'center',
-            'width'         => $width,
-            'height'        => $height
+            'image-url' => $imageUrl,
+            'width'     => $width,
+            'height'    => $height,
+            'format'    => (null != $format) ? $format : 'png'
         );
 
         //call on-before Http callback
@@ -187,25 +176,33 @@ class Imaging extends BaseController
     }
 
     /**
-     * Resize an image and output as either JPEG or PNG. See: https://www.neutrinoapi.com/api/image-
-     * resize/
+     * Watermark one image with another image. See: https://www.neutrinoapi.com/api/image-watermark/
      *
-     * @param string  $imageUrl  The URL to the source image
-     * @param integer $width     The width to resize to (in px) while preserving aspect ratio
-     * @param integer $height    The height to resize to (in px) while preserving aspect ratio
-     * @param string  $format    (optional) The output image format, can be either png or jpg
+     * @param string  $imageUrl      The URL to the source image
+     * @param string  $watermarkUrl  The URL to the watermark image
+     * @param integer $opacity       (optional) The opacity of the watermark (0 to 100)
+     * @param string  $format        (optional) The output image format, can be either png or jpg
+     * @param string  $position      (optional) The position of the watermark image, possible values are: center, top-
+     *                               left, top-center, top-right, bottom-left, bottom-center, bottom-right
+     * @param integer $width         (optional) If set resize the resulting image to this width (in px) while
+     *                               preserving aspect ratio
+     * @param integer $height        (optional) If set resize the resulting image to this height (in px) while
+     *                               preserving aspect ratio
      * @return string response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function imageResize(
+    public function imageWatermark(
         $imageUrl,
-        $width,
-        $height,
-        $format = 'png'
+        $watermarkUrl,
+        $opacity = 50,
+        $format = 'png',
+        $position = 'center',
+        $width = null,
+        $height = null
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/image-resize';
+        $_queryBuilder = '/image-watermark';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -223,10 +220,13 @@ class Imaging extends BaseController
 
         //prepare parameters
         $_parameters = array (
-            'image-url' => $imageUrl,
-            'width'     => $width,
-            'height'    => $height,
-            'format'    => (null != $format) ? $format : 'png'
+            'image-url'     => $imageUrl,
+            'watermark-url' => $watermarkUrl,
+            'opacity'       => (null != $opacity) ? $opacity : 50,
+            'format'        => (null != $format) ? $format : 'png',
+            'position'      => (null != $position) ? $position : 'center',
+            'width'         => $width,
+            'height'        => $height
         );
 
         //call on-before Http callback
@@ -267,7 +267,7 @@ class Imaging extends BaseController
      * @param integer $marginTop          (optional) The document top margin (in mm)
      * @param integer $marginBottom       (optional) The document bottom margin (in mm)
      * @param bool    $landscape          (optional) Set the document to lanscape orientation
-     * @param double  $zoom               (optional) Set the zoom factor when rendering the page (2.0 for double size,
+     * @param integer $zoom               (optional) Set the zoom factor when rendering the page (2.0 for double size,
      *                                    0.5 for half size)
      * @param bool    $grayscale          (optional) Render the final document in grayscale
      * @param bool    $mediaPrint         (optional) Use @media print CSS styles to render the document

@@ -85,15 +85,15 @@ class GeocodeReverseResponse implements JsonSerializable
     public $currencyCode;
 
     /**
-     * The detected location type ordered roughly from most to least precise, possible values are:
-     * <br/><ul><li>address - indicates a precise street address</li><li>street - accurate to the street
-     * level but may not point to the exact location of the house/building number</li><li>city - accurate
-     * to the city level, this includes villages, towns, suburbs, etc</li><li>postal-code - indicates a
-     * postal code area (no house or street information present)</li><li>railway - location is part of a
-     * rail network such as a station or railway track</li><li>natural - indicates a natural feature, for
-     * example a mountain peak or a waterway</li><li>island - location is an island or
-     * archipelago</li><li>administrative - indicates an administrative boundary such as a country, state
-     * or province</li></ul>
+     * The detected location type ordered roughly from most to least precise, possible values are: <ul>
+     * <li>address - indicates a precise street address</li> <li>street - accurate to the street level but
+     * may not point to the exact location of the house/building number</li> <li>city - accurate to the
+     * city level, this includes villages, towns, suburbs, etc</li> <li>postal-code - indicates a postal
+     * code area (no house or street information present)</li> <li>railway - location is part of a rail
+     * network such as a station or railway track</li> <li>natural - indicates a natural feature, for
+     * example a mountain peak or a waterway</li> <li>island - location is an island or archipelago</li>
+     * <li>administrative - indicates an administrative boundary such as a country, state or province</li>
+     * </ul>
      * @required
      * @var string $locationType public property
      */
@@ -109,23 +109,50 @@ class GeocodeReverseResponse implements JsonSerializable
     public $locationTags;
 
     /**
+     * The location latitude
+     * @required
+     * @var integer $latitude public property
+     */
+    public $latitude;
+
+    /**
+     * The location longitude
+     * @required
+     * @var integer $longitude public property
+     */
+    public $longitude;
+
+    /**
+     * Map containing timezone details for the location: <ul> <li>id - the time zone ID as per the IANA
+     * time zone database (tzdata)</li> <li>name - the time zone name</li> <li>abbr - the time zone
+     * abbreviation</li> <li>date - the current date within the time zone (ISO format)</li> <li>time - the
+     * current time within the time zone (ISO format)</li> </ul>
+     * @required
+     * @var array $timezone public property
+     */
+    public $timezone;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param string $country           Initialization value for $this->country
-     * @param bool   $found             Initialization value for $this->found
-     * @param string $address           Initialization value for $this->address
-     * @param string $city              Initialization value for $this->city
-     * @param string $countryCode       Initialization value for $this->countryCode
-     * @param string $postalCode        Initialization value for $this->postalCode
-     * @param string $state             Initialization value for $this->state
-     * @param array  $addressComponents Initialization value for $this->addressComponents
-     * @param string $countryCode3      Initialization value for $this->countryCode3
-     * @param string $currencyCode      Initialization value for $this->currencyCode
-     * @param string $locationType      Initialization value for $this->locationType
-     * @param array  $locationTags      Initialization value for $this->locationTags
+     * @param string  $country           Initialization value for $this->country
+     * @param bool    $found             Initialization value for $this->found
+     * @param string  $address           Initialization value for $this->address
+     * @param string  $city              Initialization value for $this->city
+     * @param string  $countryCode       Initialization value for $this->countryCode
+     * @param string  $postalCode        Initialization value for $this->postalCode
+     * @param string  $state             Initialization value for $this->state
+     * @param array   $addressComponents Initialization value for $this->addressComponents
+     * @param string  $countryCode3      Initialization value for $this->countryCode3
+     * @param string  $currencyCode      Initialization value for $this->currencyCode
+     * @param string  $locationType      Initialization value for $this->locationType
+     * @param array   $locationTags      Initialization value for $this->locationTags
+     * @param integer $latitude          Initialization value for $this->latitude
+     * @param integer $longitude         Initialization value for $this->longitude
+     * @param array   $timezone          Initialization value for $this->timezone
      */
     public function __construct()
     {
-        if (12 == func_num_args()) {
+        if (15 == func_num_args()) {
             $this->country           = func_get_arg(0);
             $this->found             = func_get_arg(1);
             $this->address           = func_get_arg(2);
@@ -138,6 +165,9 @@ class GeocodeReverseResponse implements JsonSerializable
             $this->currencyCode      = func_get_arg(9);
             $this->locationType      = func_get_arg(10);
             $this->locationTags      = func_get_arg(11);
+            $this->latitude          = func_get_arg(12);
+            $this->longitude         = func_get_arg(13);
+            $this->timezone          = func_get_arg(14);
         }
     }
 
@@ -160,6 +190,9 @@ class GeocodeReverseResponse implements JsonSerializable
         $json['currencyCode']      = $this->currencyCode;
         $json['locationType']      = $this->locationType;
         $json['locationTags']      = $this->locationTags;
+        $json['latitude']          = $this->latitude;
+        $json['longitude']         = $this->longitude;
+        $json['timezone']          = $this->timezone;
 
         return $json;
     }

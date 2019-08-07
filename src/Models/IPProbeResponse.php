@@ -29,15 +29,15 @@ class IPProbeResponse implements JsonSerializable
     public $country;
 
     /**
-     * The detected provider type, possible values are:<br/><ul><li>isp - IP belongs to an internet service
-     * provider. This includes both mobile, home and business internet providers</li><li>hosting - IP
+     * The detected provider type, possible values are: <ul> <li>isp - IP belongs to an internet service
+     * provider. This includes both mobile, home and business internet providers</li> <li>hosting - IP
      * belongs to a hosting company. This includes website hosting, cloud computing platforms and
-     * colocation facilities</li><li>vpn - IP belongs to a VPN provider</li><li>proxy - IP belongs to a
-     * proxy service. This includes HTTP/SOCKS proxies and browser based proxies</li><li>university - IP
-     * belongs to a university/college/campus</li><li>government - IP belongs to a government department.
-     * This includes military facilities</li><li>commercial - IP belongs to a commercial entity such as a
-     * corporate headquarters or company office</li><li>unknown - could not identify the provider
-     * type</li></ul>
+     * colocation facilities</li> <li>vpn - IP belongs to a VPN provider</li> <li>proxy - IP belongs to a
+     * proxy service. This includes HTTP/SOCKS proxies and browser based proxies</li> <li>university - IP
+     * belongs to a university/college/campus</li> <li>government - IP belongs to a government department.
+     * This includes military facilities</li> <li>commercial - IP belongs to a commercial entity such as a
+     * corporate headquarters or company office</li> <li>unknown - could not identify the provider
+     * type</li> </ul>
      * @required
      * @var string $providerType public property
      */
@@ -51,7 +51,7 @@ class IPProbeResponse implements JsonSerializable
     public $countryCode;
 
     /**
-     * The IPs hostname (PTR)
+     * The IPs full hostname (PTR)
      * @required
      * @var string $hostname public property
      */
@@ -200,6 +200,13 @@ class IPProbeResponse implements JsonSerializable
     public $asAge;
 
     /**
+     * The IPs host domain
+     * @required
+     * @var string $hostDomain public property
+     */
+    public $hostDomain;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param bool    $valid               Initialization value for $this->valid
      * @param string  $country             Initialization value for $this->country
@@ -226,10 +233,11 @@ class IPProbeResponse implements JsonSerializable
      * @param array   $asDomains           Initialization value for $this->asDomains
      * @param string  $asDescription       Initialization value for $this->asDescription
      * @param integer $asAge               Initialization value for $this->asAge
+     * @param string  $hostDomain          Initialization value for $this->hostDomain
      */
     public function __construct()
     {
-        if (25 == func_num_args()) {
+        if (26 == func_num_args()) {
             $this->valid               = func_get_arg(0);
             $this->country             = func_get_arg(1);
             $this->providerType        = func_get_arg(2);
@@ -255,6 +263,7 @@ class IPProbeResponse implements JsonSerializable
             $this->asDomains           = func_get_arg(22);
             $this->asDescription       = func_get_arg(23);
             $this->asAge               = func_get_arg(24);
+            $this->hostDomain          = func_get_arg(25);
         }
     }
 
@@ -290,6 +299,7 @@ class IPProbeResponse implements JsonSerializable
         $json['asDomains']           = $this->asDomains;
         $json['asDescription']       = $this->asDescription;
         $json['asAge']               = $this->asAge;
+        $json['hostDomain']          = $this->hostDomain;
 
         return $json;
     }

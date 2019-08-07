@@ -42,29 +42,29 @@ class Geolocation extends BaseController
     }
 
     /**
-     * Geocode an address, partial address or just the name of a place. See: https://www.neutrinoapi.
-     * com/api/geocode-address/
+     * Convert a geographic coordinate (latitude and longitude) into a real world address. See: https://www.
+     * neutrinoapi.com/api/geocode-reverse/
      *
-     * @param string $address       The address, partial address or name of a place to try and locate
-     * @param string $countryCode   (optional) The ISO 2-letter country code to be biased towards (the default is no
-     *                              country bias)
-     * @param string $languageCode  (optional) The language to display results in, available languages are:<ul><li>de,
-     *                              en, es, fr, it, pt, ru</li></ul>
-     * @param bool   $fuzzySearch   (optional) If no matches are found for the given address, start performing a
-     *                              recursive fuzzy search until a geolocation is found. We use a combination of
-     *                              approximate string matching and data cleansing to find possible location matches
+     * @param string $latitude      The location latitude in decimal degrees format
+     * @param string $longitude     The location longitude in decimal degrees format
+     * @param string $languageCode  (optional) The language to display results in, available languages are: <ul> <li>de,
+     *                              en, es, fr, it, pt, ru</li> </ul>
+     * @param string $zoom          (optional) The zoom level to respond with: <ul> <li>address - the most precise
+     *                              address available</li> <li>street - the street level</li> <li>city - the city
+     *                              level</li> <li>state - the state level</li> <li>country - the country level</li>
+     *                              </ul>
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function geocodeAddress(
-        $address,
-        $countryCode = null,
+    public function geocodeReverse(
+        $latitude,
+        $longitude,
         $languageCode = 'en',
-        $fuzzySearch = false
+        $zoom = 'address'
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/geocode-address';
+        $_queryBuilder = '/geocode-reverse';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -84,10 +84,10 @@ class Geolocation extends BaseController
         //prepare parameters
         $_parameters = array (
             'output-case'   => 'camel',
-            'address'       => $address,
-            'country-code'  => $countryCode,
+            'latitude'      => $latitude,
+            'longitude'     => $longitude,
             'language-code' => (null != $languageCode) ? $languageCode : 'en',
-            'fuzzy-search'  => (null != $fuzzySearch) ? var_export($fuzzySearch, true) : false
+            'zoom'          => (null != $zoom) ? $zoom : 'address'
         );
 
         //call on-before Http callback
@@ -112,7 +112,7 @@ class Geolocation extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\GeocodeAddressResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\GeocodeReverseResponse');
     }
 
     /**
@@ -181,24 +181,30 @@ class Geolocation extends BaseController
     }
 
     /**
-     * Convert a geographic coordinate (latitude and longitude) into a real world address or location. See:
-     * https://www.neutrinoapi.com/api/geocode-reverse/
+     * Geocode an address, partial address or just the name of a place. See: https://www.neutrinoapi.
+     * com/api/geocode-address/
      *
-     * @param string $latitude      The location latitude in decimal degrees format
-     * @param string $longitude     The location longitude in decimal degrees format
-     * @param string $languageCode  (optional) The language to display results in, available languages are:<ul><li>de,
-     *                              en, es, fr, it, pt, ru</li></ul>
+     * @param string $address       The address, partial address or name of a place to try and locate
+     * @param string $countryCode   (optional) The ISO 2-letter country code to be biased towards (the default is no
+     *                              country bias)
+     * @param string $languageCode  (optional) The language to display results in, available languages are: <ul> <li>de,
+     *                              en, es, fr, it, pt, ru</li> </ul>
+     * @param bool   $fuzzySearch   (optional) If no matches are found for the given address, start performing a
+     *                              recursive fuzzy search until a geolocation is found. This option is recommended for
+     *                              processing user input or implementing auto-complete. We use a combination of
+     *                              approximate string matching and data cleansing to find possible location matches
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function geocodeReverse(
-        $latitude,
-        $longitude,
-        $languageCode = 'en'
+    public function geocodeAddress(
+        $address,
+        $countryCode = null,
+        $languageCode = 'en',
+        $fuzzySearch = false
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/geocode-reverse';
+        $_queryBuilder = '/geocode-address';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -218,9 +224,10 @@ class Geolocation extends BaseController
         //prepare parameters
         $_parameters = array (
             'output-case'   => 'camel',
-            'latitude'      => $latitude,
-            'longitude'     => $longitude,
-            'language-code' => (null != $languageCode) ? $languageCode : 'en'
+            'address'       => $address,
+            'country-code'  => $countryCode,
+            'language-code' => (null != $languageCode) ? $languageCode : 'en',
+            'fuzzy-search'  => (null != $fuzzySearch) ? var_export($fuzzySearch, true) : false
         );
 
         //call on-before Http callback
@@ -245,6 +252,6 @@ class Geolocation extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\GeocodeReverseResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\GeocodeAddressResponse');
     }
 }

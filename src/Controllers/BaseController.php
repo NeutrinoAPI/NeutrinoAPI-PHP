@@ -37,7 +37,7 @@ class BaseController
      */
     protected function __construct()
     {
-        Request::timeout(45);
+        Request::timeout(90);
     }
 
     /**
@@ -72,18 +72,21 @@ class BaseController
     {
         if ($response->getStatusCode() == 400) {
             throw new Exceptions\APIErrorException(
-                'Your API request has been rejected. Check the error code for details',
+                'Your API request has been rejected. Check error code for details',
                 $_httpContext
             );
         }
         if ($response->getStatusCode() == 403) {
-            throw new APIException('You have failed to authenticate or are using an invalid API path', $_httpContext);
+            throw new Exceptions\APIErrorException('You have failed to authenticate', $_httpContext);
         }
         if ($response->getStatusCode() == 500) {
-            throw new APIException('We messed up, sorry! Your request has caused a fatal exception', $_httpContext);
+            throw new Exceptions\APIErrorException(
+                'We messed up, sorry! Your request has caused a fatal exception',
+                $_httpContext
+            );
         }
         if (($response->getStatusCode() < 200) || ($response->getStatusCode() > 208)) { //[200,208] = HTTP OK
-            throw new APIException('HTTP Response Not OK', $_httpContext);
+            throw new Exceptions\APIErrorException('We messed up, sorry! Your request has caused an error', $_httpContext);
         }
     }
 }

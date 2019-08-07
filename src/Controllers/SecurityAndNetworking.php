@@ -42,19 +42,19 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
-     * The IP Blocklist API will detect potentially malicious or dangerous IP addresses. See: https://www.
-     * neutrinoapi.com/api/ip-blocklist/
+     * Analyze and extract provider information for an IP address. See: https://www.neutrinoapi.com/api/ip-
+     * probe/
      *
-     * @param string $ip          An IPv4 or IPv6 address
+     * @param string $ip          IPv4 or IPv6 address
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function iPBlocklist(
+    public function iPProbe(
         $ip
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/ip-blocklist';
+        $_queryBuilder = '/ip-probe';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -99,7 +99,7 @@ class SecurityAndNetworking extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPBlocklistResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPProbeResponse');
     }
 
     /**
@@ -166,10 +166,71 @@ class SecurityAndNetworking extends BaseController
     }
 
     /**
+     * The IP Blocklist API will detect potentially malicious or dangerous IP addresses. See: https://www.
+     * neutrinoapi.com/api/ip-blocklist/
+     *
+     * @param string $ip          An IPv4 or IPv6 address
+     * @return mixed response from the API call
+     * @throws APIException Thrown if API call fails
+     */
+    public function iPBlocklist(
+        $ip
+    ) {
+
+        //prepare query string for API call
+        $_queryBuilder = '/ip-blocklist';
+
+        //process optional query parameters
+        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
+            'user-id' => Configuration::$userId,
+            'api-key' => Configuration::$apiKey,
+        ));
+
+        //validate and preprocess url
+        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+
+        //prepare headers
+        $_headers = array (
+            'user-agent'    => BaseController::USER_AGENT,
+            'Accept'        => 'application/json'
+        );
+
+        //prepare parameters
+        $_parameters = array (
+            'output-case' => 'camel',
+            'ip'          => $ip
+        );
+
+        //call on-before Http callback
+        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
+        }
+
+        //and invoke the API call request to fetch the response
+        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
+
+        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
+        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
+
+        //call on-after Http callback
+        if ($this->getHttpCallBack() != null) {
+            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
+        }
+
+        //handle errors defined at the API level
+        $this->validateResponse($_httpResponse, $_httpContext);
+
+        $mapper = $this->getJsonMapper();
+
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPBlocklistResponse');
+    }
+
+    /**
      * Check the reputation of an IP address, domain name, FQDN or URL against a comprehensive list of
      * blacklists and blocklists. See: https://www.neutrinoapi.com/api/host-reputation/
      *
-     * @param string  $host        An IP address, domain name, FQDN or URL.<br/>If you supply a domain/URL it will be
+     * @param string  $host        An IP address, domain name, FQDN or URL. If you supply a domain/URL it will be
      *                             checked against the URI DNSBL lists
      * @param integer $listRating  (optional) Only check lists with this rating or better
      * @return mixed response from the API call
@@ -228,66 +289,5 @@ class SecurityAndNetworking extends BaseController
         $mapper = $this->getJsonMapper();
 
         return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\HostReputationResponse');
-    }
-
-    /**
-     * Analyze and extract provider information for an IP address. See: https://www.neutrinoapi.com/api/ip-
-     * probe/
-     *
-     * @param string $ip          IPv4 or IPv6 address
-     * @return mixed response from the API call
-     * @throws APIException Thrown if API call fails
-     */
-    public function iPProbe(
-        $ip
-    ) {
-
-        //prepare query string for API call
-        $_queryBuilder = '/ip-probe';
-
-        //process optional query parameters
-        APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
-            'user-id' => Configuration::$userId,
-            'api-key' => Configuration::$apiKey,
-        ));
-
-        //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
-
-        //prepare headers
-        $_headers = array (
-            'user-agent'    => BaseController::USER_AGENT,
-            'Accept'        => 'application/json'
-        );
-
-        //prepare parameters
-        $_parameters = array (
-            'output-case' => 'camel',
-            'ip'          => $ip
-        );
-
-        //call on-before Http callback
-        $_httpRequest = new HttpRequest(HttpMethod::POST, $_headers, $_queryUrl, $_parameters);
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnBeforeRequest($_httpRequest);
-        }
-
-        //and invoke the API call request to fetch the response
-        $response = Request::post($_queryUrl, $_headers, Request\Body::Form($_parameters));
-
-        $_httpResponse = new HttpResponse($response->code, $response->headers, $response->raw_body);
-        $_httpContext = new HttpContext($_httpRequest, $_httpResponse);
-
-        //call on-after Http callback
-        if ($this->getHttpCallBack() != null) {
-            $this->getHttpCallBack()->callOnAfterRequest($_httpContext);
-        }
-
-        //handle errors defined at the API level
-        $this->validateResponse($_httpResponse, $_httpContext);
-
-        $mapper = $this->getJsonMapper();
-
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\IPProbeResponse');
     }
 }

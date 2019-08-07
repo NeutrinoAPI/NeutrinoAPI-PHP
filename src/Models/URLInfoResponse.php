@@ -176,6 +176,14 @@ class URLInfoResponse implements JsonSerializable
     public $content;
 
     /**
+     * True if a timeout occurred while loading the URL. You can set the timeout with the request parameter
+     * 'timeout'
+     * @required
+     * @var bool $isTimeout public property
+     */
+    public $isTimeout;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param integer $httpStatusMessage Initialization value for $this->httpStatusMessage
      * @param string  $serverRegion      Initialization value for $this->serverRegion
@@ -200,10 +208,11 @@ class URLInfoResponse implements JsonSerializable
      * @param string  $contentType       Initialization value for $this->contentType
      * @param bool    $httpRedirect      Initialization value for $this->httpRedirect
      * @param string  $content           Initialization value for $this->content
+     * @param bool    $isTimeout         Initialization value for $this->isTimeout
      */
     public function __construct()
     {
-        if (23 == func_num_args()) {
+        if (24 == func_num_args()) {
             $this->httpStatusMessage = func_get_arg(0);
             $this->serverRegion      = func_get_arg(1);
             $this->query             = func_get_arg(2);
@@ -227,6 +236,7 @@ class URLInfoResponse implements JsonSerializable
             $this->contentType       = func_get_arg(20);
             $this->httpRedirect      = func_get_arg(21);
             $this->content           = func_get_arg(22);
+            $this->isTimeout         = func_get_arg(23);
         }
     }
 
@@ -260,6 +270,7 @@ class URLInfoResponse implements JsonSerializable
         $json['contentType']       = $this->contentType;
         $json['httpRedirect']      = $this->httpRedirect;
         $json['content']           = $this->content;
+        $json['isTimeout']         = $this->isTimeout;
 
         return $json;
     }

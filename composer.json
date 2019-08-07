@@ -2,15 +2,15 @@
     "name": "neutrinoapi/neutrinoapi_php_sdk",
     "type": "library",
     "description": "The general-purpose API",
-    "version": "3.4.1",
-    "keywords": ["NeutrinoAPI","API","SDK"],
-    "homepage": "https://www.neutrinoapi.com/contact-us/",
+    "version": "3.4.3",
+    "keywords": ["Neutrino API","API","SDK"],
+    "homepage": "https://www.neutrinoapi.com/",
     "license": "MIT",
     "authors": [
         {
-            "name": "NeutrinoAPI",
+            "name": "Neutrino API",
             "email": "tech@neutrinoapi.com",
-            "homepage": "https://www.neutrinoapi.com/contact-us/"
+            "homepage": "https://www.neutrinoapi.com/"
         }
     ],
     "require": {

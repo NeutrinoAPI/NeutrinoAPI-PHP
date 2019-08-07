@@ -29,14 +29,14 @@ class IPInfoResponse implements JsonSerializable
     public $country;
 
     /**
-     * The IPs hostname (only set if reverse-lookup has been used)
+     * The IPs full hostname (only set if reverse-lookup has been used)
      * @required
      * @var string $hostname public property
      */
     public $hostname;
 
     /**
-     * Full city name (if detectable)
+     * Name of the city (if detectable)
      * @required
      * @var string $city public property
      */
@@ -52,12 +52,12 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location latitude
      * @required
-     * @var double $latitude public property
+     * @var integer $latitude public property
      */
     public $latitude;
 
     /**
-     * Full region name (if detectable)
+     * Name of the region (if detectable)
      * @required
      * @var string $region public property
      */
@@ -66,7 +66,7 @@ class IPInfoResponse implements JsonSerializable
     /**
      * Location longitude
      * @required
-     * @var double $longitude public property
+     * @var integer $longitude public property
      */
     public $longitude;
 
@@ -99,23 +99,42 @@ class IPInfoResponse implements JsonSerializable
     public $currencyCode;
 
     /**
+     * The IPs host domain (only set if reverse-lookup has been used)
+     * @required
+     * @var string $hostDomain public property
+     */
+    public $hostDomain;
+
+    /**
+     * Map containing timezone details for the location: <ul> <li>id - the time zone ID as per the IANA
+     * time zone database (tzdata)</li> <li>name - the time zone name</li> <li>abbr - the time zone
+     * abbreviation</li> <li>date - the current date within the time zone (ISO format)</li> <li>time - the
+     * current time within the time zone (ISO format)</li> </ul>
+     * @required
+     * @var array $timezone public property
+     */
+    public $timezone;
+
+    /**
      * Constructor to set initial or default values of member properties
-     * @param bool   $valid         Initialization value for $this->valid
-     * @param string $country       Initialization value for $this->country
-     * @param string $hostname      Initialization value for $this->hostname
-     * @param string $city          Initialization value for $this->city
-     * @param string $countryCode   Initialization value for $this->countryCode
-     * @param double $latitude      Initialization value for $this->latitude
-     * @param string $region        Initialization value for $this->region
-     * @param double $longitude     Initialization value for $this->longitude
-     * @param string $continentCode Initialization value for $this->continentCode
-     * @param string $ip            Initialization value for $this->ip
-     * @param string $countryCode3  Initialization value for $this->countryCode3
-     * @param string $currencyCode  Initialization value for $this->currencyCode
+     * @param bool    $valid         Initialization value for $this->valid
+     * @param string  $country       Initialization value for $this->country
+     * @param string  $hostname      Initialization value for $this->hostname
+     * @param string  $city          Initialization value for $this->city
+     * @param string  $countryCode   Initialization value for $this->countryCode
+     * @param integer $latitude      Initialization value for $this->latitude
+     * @param string  $region        Initialization value for $this->region
+     * @param integer $longitude     Initialization value for $this->longitude
+     * @param string  $continentCode Initialization value for $this->continentCode
+     * @param string  $ip            Initialization value for $this->ip
+     * @param string  $countryCode3  Initialization value for $this->countryCode3
+     * @param string  $currencyCode  Initialization value for $this->currencyCode
+     * @param string  $hostDomain    Initialization value for $this->hostDomain
+     * @param array   $timezone      Initialization value for $this->timezone
      */
     public function __construct()
     {
-        if (12 == func_num_args()) {
+        if (14 == func_num_args()) {
             $this->valid         = func_get_arg(0);
             $this->country       = func_get_arg(1);
             $this->hostname      = func_get_arg(2);
@@ -128,6 +147,8 @@ class IPInfoResponse implements JsonSerializable
             $this->ip            = func_get_arg(9);
             $this->countryCode3  = func_get_arg(10);
             $this->currencyCode  = func_get_arg(11);
+            $this->hostDomain    = func_get_arg(12);
+            $this->timezone      = func_get_arg(13);
         }
     }
 
@@ -150,6 +171,8 @@ class IPInfoResponse implements JsonSerializable
         $json['ip']            = $this->ip;
         $json['countryCode3']  = $this->countryCode3;
         $json['currencyCode']  = $this->currencyCode;
+        $json['hostDomain']    = $this->hostDomain;
+        $json['timezone']      = $this->timezone;
 
         return $json;
     }

@@ -42,53 +42,30 @@ class WWW extends BaseController
     }
 
     /**
-     * Browser bot can extract content, interact with keyboard and mouse events, and execute JavaScript on
-     * a website. See: https://www.neutrinoapi.com/api/browser-bot/
+     * Parse, analyze and retrieve content from the supplied URL. See: https://www.neutrinoapi.com/api/url-
+     * info/
      *
-     * @param string  $url                       The URL to load
-     * @param integer $timeout                   (optional) Timeout in seconds. Give up if still trying to load the
-     *                                           page after this number of seconds
-     * @param integer $delay                     (optional) Delay in seconds to wait before executing any selectors or
-     *                                           JavaScript
-     * @param string  $selector                  (optional) Extract content from the page DOM using this selector.
-     *                                           Commonly known as a CSS selector, you can find a good reference <a
-     *                                           href="https://www.w3schools.com/cssref/css_selectors.asp"
-     *                                           target="_blank">here</a>
-     * @param array   $exec                      (optional) Execute JavaScript on the page. Each array element should
-     *                                           contain a valid JavaScript statement in string form. If a statement
-     *                                           returns any kind of value it will be returned in the 'exec-results'
-     *                                           response.<br/><br/>For your convenience you can also use the following
-     *                                           special shortcut functions:<br/><div style='padding-left:32px; font-
-     *                                           family:inherit; font-size:inherit;'>sleep(seconds); Just wait/sleep
-     *                                           for the specified number of seconds.<br/>click('selector'); Click on
-     *                                           the first element matching the given selector.<br/>focus('selector');
-     *                                           Focus on the first element matching the given selector.
-     *                                           <br/>keys('characters'); Send the specified keyboard characters. Use
-     *                                           click() or focus() first to send keys to a specific element.
-     *                                           <br/>enter(); Send the Enter key.<br/>tab(); Send the Tab key.
-     *                                           <br/></div><br/>Example:<br/><div style='padding-left:32px; font-
-     *                                           family:inherit; font-size:inherit;'>[ "click('#button-id')",
-     *                                           "sleep(1)", "click('.field-class')", "keys('1234')", "enter()"
-     *                                           ]</div>
-     * @param string  $userAgent                 (optional) Override the browsers default user-agent string with this
-     *                                           one
-     * @param bool    $ignoreCertificateErrors   (optional) Ignore any TLS/SSL certificate errors and load the page
+     * @param string  $url                       The URL to probe
+     * @param bool    $fetchContent              (optional) If this URL responds with html, text, json or xml then
+     *                                           return the response. This option is useful if you want to perform
+     *                                           further processing on the URL content (e.g. with the HTML Extract or
+     *                                           HTML Clean APIs)
+     * @param bool    $ignoreCertificateErrors   (optional) Ignore any TLS/SSL certificate errors and load the URL
      *                                           anyway
+     * @param integer $timeout                   (optional) Timeout in seconds. Give up if still trying to load the URL
+     *                                           after this number of seconds
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function browserBot(
+    public function uRLInfo(
         $url,
-        $timeout = 30,
-        $delay = 2,
-        $selector = null,
-        $exec = '[]',
-        $userAgent = null,
-        $ignoreCertificateErrors = false
+        $fetchContent = false,
+        $ignoreCertificateErrors = false,
+        $timeout = 20
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/browser-bot';
+        $_queryBuilder = '/url-info';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -109,12 +86,9 @@ class WWW extends BaseController
         $_parameters = array (
             'output-case'               => 'camel',
             'url'                       => $url,
-            'timeout'                   => (null != $timeout) ? $timeout : 30,
-            'delay'                     => (null != $delay) ? $delay : 2,
-            'selector'                  => $selector,
-            'exec'                    => array_values($exec),
-            'user-agent'                => $userAgent,
-            'ignore-certificate-errors' => (null != $ignoreCertificateErrors) ? var_export($ignoreCertificateErrors, true) : false
+            'fetch-content'             => (null != $fetchContent) ? var_export($fetchContent, true) : false,
+            'ignore-certificate-errors' => (null != $ignoreCertificateErrors) ? var_export($ignoreCertificateErrors, true) : false,
+            'timeout'                   => (null != $timeout) ? $timeout : 20
         );
 
         //call on-before Http callback
@@ -139,7 +113,7 @@ class WWW extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\BrowserBotResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\URLInfoResponse');
     }
 
     /**
@@ -147,13 +121,12 @@ class WWW extends BaseController
      *
      * @param string $content     The HTML content. This can be either a URL to load HTML from or an actual HTML
      *                            content string
-     * @param string $outputType  The level of sanitization, possible values are:<br/><b>plain-text</b>: reduce the
-     *                            content to plain text only (no HTML tags at all)<br/><br/><b>simple-text</b>: allow
-     *                            only very basic text formatting tags like b, em, i, strong, u<br/><br/><b>basic-
-     *                            html</b>: allow advanced text formatting and hyper links<br/><br/><b>basic-html-with-
-     *                            images</b>: same as basic html but also allows image tags<br/><br/><b>advanced-
-     *                            html</b>: same as basic html with images but also allows many more common HTML tags
-     *                            like table, ul, dl, pre<br/>
+     * @param string $outputType  The level of sanitization, possible values are: <b>plain-text</b>: reduce the content
+     *                            to plain text only (no HTML tags at all) <b>simple-text</b>: allow only very basic
+     *                            text formatting tags like b, em, i, strong, u <b>basic-html</b>: allow advanced text
+     *                            formatting and hyper links <b>basic-html-with-images</b>: same as basic html but also
+     *                            allows image tags <b>advanced-html</b>: same as basic html with images but also
+     *                            allows many more common HTML tags like table, ul, dl, pre
      * @return string response from the API call
      * @throws APIException Thrown if API call fails
      */
@@ -209,23 +182,49 @@ class WWW extends BaseController
     }
 
     /**
-     * Parse, analyze and retrieve content from the supplied URL. See: https://www.neutrinoapi.com/api/url-
-     * info/
+     * Browser bot can extract content, interact with keyboard and mouse events, and execute JavaScript on
+     * a website. See: https://www.neutrinoapi.com/api/browser-bot/
      *
-     * @param string $url           The URL to probe
-     * @param bool   $fetchContent  (optional) If this URL responds with html, text, json or xml then return the
-     *                              response. This option is useful if you want to perform further processing on the
-     *                              URL content (e.g. with the HTML Extract or HTML Clean APIs)
+     * @param string  $url                       The URL to load
+     * @param integer $timeout                   (optional) Timeout in seconds. Give up if still trying to load the
+     *                                           page after this number of seconds
+     * @param integer $delay                     (optional) Delay in seconds to wait before capturing any page data,
+     *                                           executing selectors or JavaScript
+     * @param string  $selector                  (optional) Extract content from the page DOM using this selector.
+     *                                           Commonly known as a CSS selector, you can find a good reference <a
+     *                                           href="https://www.w3schools.com/cssref/css_selectors.asp">here</a>
+     * @param array   $exec                      (optional) Execute JavaScript on the page. Each array element should
+     *                                           contain a valid JavaScript statement in string form. If a statement
+     *                                           returns any kind of value it will be returned in the 'exec-results'
+     *                                           response. For your convenience you can also use the following special
+     *                                           shortcut functions: <div> sleep(seconds); Just wait/sleep for the
+     *                                           specified number of seconds. click('selector'); Click on the first
+     *                                           element matching the given selector. focus('selector'); Focus on the
+     *                                           first element matching the given selector. keys('characters'); Send
+     *                                           the specified keyboard characters. Use click() or focus() first to
+     *                                           send keys to a specific element. enter(); Send the Enter key. tab();
+     *                                           Send the Tab key. </div> Example: <div> [ "click('#button-id')",
+     *                                           "sleep(1)", "click('.field-class')", "keys('1234')", "enter()" ]
+     *                                           </div>
+     * @param string  $userAgent                 (optional) Override the browsers default user-agent string with this
+     *                                           one
+     * @param bool    $ignoreCertificateErrors   (optional) Ignore any TLS/SSL certificate errors and load the page
+     *                                           anyway
      * @return mixed response from the API call
      * @throws APIException Thrown if API call fails
      */
-    public function uRLInfo(
+    public function browserBot(
         $url,
-        $fetchContent = false
+        $timeout = 30,
+        $delay = 3,
+        $selector = null,
+        $exec = '[]',
+        $userAgent = null,
+        $ignoreCertificateErrors = false
     ) {
 
         //prepare query string for API call
-        $_queryBuilder = '/url-info';
+        $_queryBuilder = '/browser-bot';
 
         //process optional query parameters
         APIHelper::appendUrlWithQueryParameters($_queryBuilder, array (
@@ -238,15 +237,20 @@ class WWW extends BaseController
 
         //prepare headers
         $_headers = array (
-            'user-agent'    => BaseController::USER_AGENT,
-            'Accept'        => 'application/json'
+            'user-agent'              => BaseController::USER_AGENT,
+            'Accept'                  => 'application/json'
         );
 
         //prepare parameters
         $_parameters = array (
-            'output-case'   => 'camel',
-            'url'           => $url,
-            'fetch-content' => (null != $fetchContent) ? var_export($fetchContent, true) : false
+            'output-case'               => 'camel',
+            'url'                       => $url,
+            'timeout'                   => (null != $timeout) ? $timeout : 30,
+            'delay'                     => (null != $delay) ? $delay : 3,
+            'selector'                  => $selector,
+            'exec'                    => array_values($exec),
+            'user-agent'                => $userAgent,
+            'ignore-certificate-errors' => (null != $ignoreCertificateErrors) ? var_export($ignoreCertificateErrors, true) : false
         );
 
         //call on-before Http callback
@@ -271,6 +275,6 @@ class WWW extends BaseController
 
         $mapper = $this->getJsonMapper();
 
-        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\URLInfoResponse');
+        return $mapper->mapClass($response->body, 'NeutrinoAPILib\\Models\\BrowserBotResponse');
     }
 }

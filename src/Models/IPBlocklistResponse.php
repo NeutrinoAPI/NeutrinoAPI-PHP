@@ -127,6 +127,13 @@ class IPBlocklistResponse implements JsonSerializable
     public $blocklists;
 
     /**
+     * An array of objects containing details on which sensors were used to detect this IP
+     * @required
+     * @var array $sensors public property
+     */
+    public $sensors;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param string  $ip           Initialization value for $this->ip
      * @param bool    $isBot        Initialization value for $this->isBot
@@ -144,10 +151,11 @@ class IPBlocklistResponse implements JsonSerializable
      * @param bool    $isVpn        Initialization value for $this->isVpn
      * @param integer $lastSeen     Initialization value for $this->lastSeen
      * @param array   $blocklists   Initialization value for $this->blocklists
+     * @param array   $sensors      Initialization value for $this->sensors
      */
     public function __construct()
     {
-        if (16 == func_num_args()) {
+        if (17 == func_num_args()) {
             $this->ip           = func_get_arg(0);
             $this->isBot        = func_get_arg(1);
             $this->isExploitBot = func_get_arg(2);
@@ -164,6 +172,7 @@ class IPBlocklistResponse implements JsonSerializable
             $this->isVpn        = func_get_arg(13);
             $this->lastSeen     = func_get_arg(14);
             $this->blocklists   = func_get_arg(15);
+            $this->sensors      = func_get_arg(16);
         }
     }
 
@@ -190,6 +199,7 @@ class IPBlocklistResponse implements JsonSerializable
         $json['isVpn']        = $this->isVpn;
         $json['lastSeen']     = $this->lastSeen;
         $json['blocklists']   = $this->blocklists;
+        $json['sensors']      = $this->sensors;
 
         return $json;
     }

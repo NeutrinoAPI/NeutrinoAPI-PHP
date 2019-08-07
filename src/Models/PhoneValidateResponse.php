@@ -43,18 +43,18 @@ class PhoneValidateResponse implements JsonSerializable
     public $location;
 
     /**
-     * True if this is a mobile number (only true with 100% certainty, if the number type is unknown this
-     * value will be false)
+     * True if this is a mobile number. If the number type is unknown this value will be false, use HLR
+     * lookup instead
      * @required
      * @var bool $isMobile public property
      */
     public $isMobile;
 
     /**
-     * The predicted number type.<br/>Note: type detection is not possible in some countries which have no
-     * predictable prefix pattern (you can use the HLR Lookup API in these cases)<br/> Possible values are:
-     * <br/><ul><li>mobile</li><li>fixed-line</li><li>premium-rate</li><li>toll-
-     * free</li><li>voip</li><li>unknown (use HLR lookup instead)</li></ul>
+     * The predicted number type. Note: type detection is not possible in some countries which have no
+     * predictable prefix pattern (you can use the HLR Lookup API in these cases) Possible values are: <ul>
+     * <li>mobile</li> <li>fixed-line</li> <li>premium-rate</li> <li>toll-free</li> <li>voip</li>
+     * <li>unknown (use HLR lookup)</li> </ul>
      * @required
      * @var string $type public property
      */
