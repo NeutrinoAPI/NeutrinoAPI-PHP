@@ -74,8 +74,8 @@ function imageResize(
 
 ```php
 $imageUrl = 'image-url';
-$width = 236;
-$height = 236;
+$width = 19;
+$height = 19;
 $format = 'png';
 
 $result = $imaging->imageResize($imageUrl, $width, $height, $format);
@@ -161,8 +161,8 @@ $watermarkUrl = 'watermark-url';
 $opacity = 50;
 $format = 'png';
 $position = 'center';
-$width = 236;
-$height = 236;
+$width = 19;
+$height = 19;
 
 $result = $imaging->imageWatermark($imageUrl, $watermarkUrl, $opacity, $format, $position, $width, $height);
 
@@ -275,7 +275,7 @@ $mediaQueries = false;
 $forms = false;
 $css = 'css';
 $imageWidth = 1024;
-$imageHeight = 236;
+$imageHeight = 110;
 $renderDelay = 0;
 $headerTextLeft = 'header-text-left';
 $headerTextCenter = 'header-text-center';
@@ -291,8 +291,8 @@ $footerSize = 9;
 $footerFont = 'Courier';
 $footerFontSize = 11;
 $footerLine = false;
-$pageWidth = 236;
-$pageHeight = 236;
+$pageWidth = 110;
+$pageHeight = 110;
 
 $result = $imaging->hTML5Render($content, $format, $pageSize, $title, $margin, $marginLeft, $marginRight, $marginTop, $marginBottom, $landscape, $zoom, $grayscale, $mediaPrint, $mediaQueries, $forms, $css, $imageWidth, $imageHeight, $renderDelay, $headerTextLeft, $headerTextCenter, $headerTextRight, $headerSize, $headerFont, $headerFontSize, $headerLine, $footerTextLeft, $footerTextCenter, $footerTextRight, $footerSize, $footerFont, $footerFontSize, $footerLine, $pageWidth, $pageHeight);
 
@@ -431,7 +431,7 @@ function sMSVerify(
 ```php
 $number = 'number';
 $codeLength = 5;
-$securityCode = 236;
+$securityCode = 110;
 $countryCode = 'country-code';
 $languageCode = 'en';
 
@@ -507,7 +507,7 @@ function phoneVerify(
 ```php
 $number = 'number';
 $codeLength = 6;
-$securityCode = 236;
+$securityCode = 110;
 $playbackDelay = 800;
 $countryCode = 'country-code';
 $languageCode = 'en';
@@ -1065,7 +1065,7 @@ function browserBot(
         $timeout = 30,
         $delay = 3,
         $selector = null,
-        $exec = '[]',
+        $exec = null,
         $userAgent = null,
         $ignoreCertificateErrors = false)
 ```
@@ -1078,7 +1078,7 @@ function browserBot(
 | timeout |  ``` Optional ```  ``` DefaultValue ```  | Timeout in seconds. Give up if still trying to load the page after this number of seconds |
 | delay |  ``` Optional ```  ``` DefaultValue ```  | Delay in seconds to wait before capturing any page data, executing selectors or JavaScript |
 | selector |  ``` Optional ```  | Extract content from the page DOM using this selector. Commonly known as a CSS selector, you can find a good reference <a href="https://www.w3schools.com/cssref/css_selectors.asp">here</a> |
-| exec |  ``` Optional ```  ``` Collection ```  ``` DefaultValue ```  | Execute JavaScript on the page. Each array element should contain a valid JavaScript statement in string form. If a statement returns any kind of value it will be returned in the 'exec-results' response. For your convenience you can also use the following special shortcut functions: <div> sleep(seconds); Just wait/sleep for the specified number of seconds. click('selector'); Click on the first element matching the given selector. focus('selector'); Focus on the first element matching the given selector. keys('characters'); Send the specified keyboard characters. Use click() or focus() first to send keys to a specific element. enter(); Send the Enter key. tab(); Send the Tab key. </div> Example: <div> [ "click('#button-id')", "sleep(1)", "click('.field-class')", "keys('1234')", "enter()" ] </div> |
+| exec |  ``` Optional ```  ``` Collection ```  | Execute JavaScript on the page. Each array element should contain a valid JavaScript statement in string form. If a statement returns any kind of value it will be returned in the 'exec-results' response. For your convenience you can also use the following special shortcut functions: <div> sleep(seconds); Just wait/sleep for the specified number of seconds. click('selector'); Click on the first element matching the given selector. focus('selector'); Focus on the first element matching the given selector. keys('characters'); Send the specified keyboard characters. Use click() or focus() first to send keys to a specific element. enter(); Send the Enter key. tab(); Send the Tab key. </div> Example: <div> [ "click('#button-id')", "sleep(1)", "click('.field-class')", "keys('1234')", "enter()" ] </div> |
 | userAgent |  ``` Optional ```  | Override the browsers default user-agent string with this one |
 | ignoreCertificateErrors |  ``` Optional ```  ``` DefaultValue ```  | Ignore any TLS/SSL certificate errors and load the page anyway |
 
@@ -1091,8 +1091,7 @@ $url = 'url';
 $timeout = 30;
 $delay = 3;
 $selector = 'selector';
-$execValue = "[]";
-$exec = APIHelper::deserialize($execValue);
+$exec = array('exec');
 $userAgent = 'user-agent';
 $ignoreCertificateErrors = false;
 

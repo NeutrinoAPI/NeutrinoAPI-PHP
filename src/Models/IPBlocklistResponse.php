@@ -106,7 +106,8 @@ class IPBlocklistResponse implements JsonSerializable
     public $isListed;
 
     /**
-     * IP has been detected as belonging to a VPN provider
+     * IP belongs to a VPN provider. This field is only kept for backward compatibility, for VPN detection
+     * use the <a href="https://www.neutrinoapi.com/api/ip-probe/">IP Probe</a> API
      * @required
      * @var bool $isVpn public property
      */

@@ -2,7 +2,7 @@
     "name": "neutrinoapi/neutrinoapi_php_sdk",
     "type": "library",
     "description": "The general-purpose API",
-    "version": "3.4.3",
+    "version": "3.4.5",
     "keywords": ["Neutrino API","API","SDK"],
     "homepage": "https://www.neutrinoapi.com/",
     "license": "MIT",

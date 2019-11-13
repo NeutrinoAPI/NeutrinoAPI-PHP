@@ -207,6 +207,13 @@ class IPProbeResponse implements JsonSerializable
     public $hostDomain;
 
     /**
+     * The domain of the VPN provider (may be empty if the VPN domain is not detectable)
+     * @required
+     * @var string $vpnDomain public property
+     */
+    public $vpnDomain;
+
+    /**
      * Constructor to set initial or default values of member properties
      * @param bool    $valid               Initialization value for $this->valid
      * @param string  $country             Initialization value for $this->country
@@ -234,10 +241,11 @@ class IPProbeResponse implements JsonSerializable
      * @param string  $asDescription       Initialization value for $this->asDescription
      * @param integer $asAge               Initialization value for $this->asAge
      * @param string  $hostDomain          Initialization value for $this->hostDomain
+     * @param string  $vpnDomain           Initialization value for $this->vpnDomain
      */
     public function __construct()
     {
-        if (26 == func_num_args()) {
+        if (27 == func_num_args()) {
             $this->valid               = func_get_arg(0);
             $this->country             = func_get_arg(1);
             $this->providerType        = func_get_arg(2);
@@ -264,6 +272,7 @@ class IPProbeResponse implements JsonSerializable
             $this->asDescription       = func_get_arg(23);
             $this->asAge               = func_get_arg(24);
             $this->hostDomain          = func_get_arg(25);
+            $this->vpnDomain           = func_get_arg(26);
         }
     }
 
@@ -300,6 +309,7 @@ class IPProbeResponse implements JsonSerializable
         $json['asDescription']       = $this->asDescription;
         $json['asAge']               = $this->asAge;
         $json['hostDomain']          = $this->hostDomain;
+        $json['vpnDomain']           = $this->vpnDomain;
 
         return $json;
     }

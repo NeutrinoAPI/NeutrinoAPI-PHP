@@ -16,6 +16,7 @@ use NeutrinoAPILib\Http\HttpRequest;
 use NeutrinoAPILib\Http\HttpResponse;
 use NeutrinoAPILib\Http\HttpMethod;
 use NeutrinoAPILib\Http\HttpContext;
+use NeutrinoAPILib\Servers;
 use Unirest\Request;
 
 /**
@@ -63,7 +64,7 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::getBaseUri() . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
@@ -125,7 +126,7 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::getBaseUri() . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
@@ -187,7 +188,7 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::getBaseUri() . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
@@ -251,7 +252,7 @@ class SecurityAndNetworking extends BaseController
         ));
 
         //validate and preprocess url
-        $_queryUrl = APIHelper::cleanUrl(Configuration::$BASEURI . $_queryBuilder);
+        $_queryUrl = APIHelper::cleanUrl(Configuration::getBaseUri() . $_queryBuilder);
 
         //prepare headers
         $_headers = array (
